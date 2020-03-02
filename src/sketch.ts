@@ -1,16 +1,16 @@
-import * as p5 from 'p5'
+/// <reference path="../node_modules/@types/p5/global.d.ts" />
+require("p5")
 
-new p5((p: p5) => {
-	p.setup = () => {
-		p.createCanvas(500, 500)
-		p.background(0)
-		p.fill(255)
-		p.circle(100, 100, 20)
-	}
+function setup() {
+	createCanvas(500, 500)
+	background(0)
+	fill(255)
+	circle(100, 100, 20)
+}
 
-	// p.draw = () => {
-	// 	p.background(0)
-	// 	p.fill(255)
-	// 	p.circle(100, 100, 20)
-	// }
-})
+function draw() {
+
+}
+
+window['setup'] = setup
+window['draw'] = draw
