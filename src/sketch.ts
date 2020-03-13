@@ -52,13 +52,5 @@ function create2dgrid(cols: number, rows: number) {
   return arr;
 }
 
-function populateGrid() {
-  for (let i = 0; i < cols; i++) {
-    for (let j = 0; j < rows; j++) {
-      grid[i][j] = floor(random(2));
-    }
-  }
-}
-
 window["setup"] = setup;
 window["draw"] = draw;
