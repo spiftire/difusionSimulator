@@ -22,16 +22,23 @@ function setup() {
   cols = Math.floor(width / resolution);
   rows = Math.floor(height / resolution);
   grid = create2dgrid(cols, rows);
-  console.table(grid);
   
-  simulator = new Simulator(cells, grid);
+  simulator = new Simulator(grid);
   //   populateGrid();
-  firstCell = new CellOfParticles(
-    10000,
-    new GridPosition(Math.floor(rows / 2), 0)
-  );
+  // firstCell = new CellOfParticles(
+  //   10000,
+  //   new GridPosition(Math.floor(rows / 2), 0)
+  // );
 
-  grid[10][0] = firstCell;
+  // grid[firstCell.position.y][firstCell.position.x] = firstCell;
+  
+  // console.table(grid);
+  console.log(simulator);
+  
+
+
+  simulator.step();
+
   
 
 }
@@ -39,17 +46,21 @@ function setup() {
 function draw() {
   background(255);
 
-  for (let i = 0; i < cols; i++) {
-    for (let j = 0; j < rows; j++) {
-      let x = i * resolution;
-      let y = j * resolution;
-      if (grid[i][j] instanceof CellOfParticles) {
-        fill(51);
-        stroke(0);
-        rect(x, y, resolution - 1, resolution - 1); // -1 pixle to get boarders
-      }
-    }
-  }
+  drawCell();
+}
+
+function drawCell() {
+	// for (let i = 0; i < cols; i++) {
+	// 	for (let j = 0; j < rows; j++) {
+	// 		let x = i * resolution;
+	// 		let y = j * resolution;
+	// 		if (grid[i][j] instanceof CellOfParticles) {
+	// 			fill(51);
+	// 			stroke(0);
+	// 			rect(x, y, resolution - 1, resolution - 1);
+	// 		}
+	// 	}
+	// }
 }
 
 function create2dgrid(
@@ -59,6 +70,10 @@ function create2dgrid(
   let arr = new Array(cols);
   for (let col = 0; col < arr.length; col++) {
     arr[col] = new Array(rows);
+    const temprows = arr[col];
+    for(let i = 0; i< temprows.length; i++) {
+      temprows[i] = null;
+    }
   }
   return arr;
 }
