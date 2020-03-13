@@ -2,13 +2,17 @@
 
 import { CellOfParticles } from "./CellOfParticles";
 import { GridPosition } from "./GridPosition";
+import { Simulator } from "./Simulator";
 
 require("p5");
 let resolution = 20;
 let cols: number;
 let rows: number;
-let grid: any[];
+let grid: Array<Array<CellOfParticles>>;
 let firstCell: CellOfParticles;
+const cells = new Array<CellOfParticles>();
+cells.push(firstCell);
+let simulator = new Simulator(cells, gird)
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -44,7 +48,7 @@ function draw() {
   }
 }
 
-function create2dgrid(cols: number, rows: number) {
+function create2dgrid(cols: number, rows: number) : Array<Array<CellOfParticles>> {
   let arr = new Array(cols);
   for (let col = 0; col < arr.length; col++) {
     arr[col] = new Array(rows);
