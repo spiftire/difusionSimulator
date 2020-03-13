@@ -10,9 +10,9 @@ let cols: number;
 let rows: number;
 let grid: Array<Array<CellOfParticles>>;
 let firstCell: CellOfParticles;
+let simulator;
 const cells = new Array<CellOfParticles>();
 cells.push(firstCell);
-let simulator = new Simulator(cells, gird)
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -22,24 +22,28 @@ function setup() {
   cols = Math.floor(width / resolution);
   rows = Math.floor(height / resolution);
   grid = create2dgrid(cols, rows);
-//   populateGrid();
-  firstCell = new CellOfParticles(
-	10000,
-	new GridPosition(Math.floor(rows / 2), 0)
-  );
+  console.table(grid);
   
+  simulator = new Simulator(cells, grid);
+  //   populateGrid();
+  firstCell = new CellOfParticles(
+    10000,
+    new GridPosition(Math.floor(rows / 2), 0)
+  );
+
+  grid[10][0] = firstCell;
+  
+
 }
 
 function draw() {
-  //   fill(255, 32);
-  //   circle(mouseX, mouseY, random(20, 50));
   background(255);
 
   for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
       let x = i * resolution;
       let y = j * resolution;
-      if (grid[i][j]) {
+      if (grid[i][j] instanceof CellOfParticles) {
         fill(51);
         stroke(0);
         rect(x, y, resolution - 1, resolution - 1); // -1 pixle to get boarders
@@ -48,7 +52,10 @@ function draw() {
   }
 }
 
-function create2dgrid(cols: number, rows: number) : Array<Array<CellOfParticles>> {
+function create2dgrid(
+  cols: number,
+  rows: number
+): Array<Array<CellOfParticles>> {
   let arr = new Array(cols);
   for (let col = 0; col < arr.length; col++) {
     arr[col] = new Array(rows);
