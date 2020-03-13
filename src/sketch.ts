@@ -1,16 +1,64 @@
 /// <reference path="../node_modules/@types/p5/global.d.ts" />
-require("p5")
+
+import { CellOfParticles } from "./CellOfParticles";
+import { GridPosition } from "./GridPosition";
+
+require("p5");
+let resolution = 20;
+let cols: number;
+let rows: number;
+let grid: any[];
+let firstCell: CellOfParticles;
 
 function setup() {
-	createCanvas(500, 500)
-	background(0)
-	noStroke()
+  createCanvas(windowWidth, windowHeight);
+  background(0);
+  noStroke();
+
+  cols = Math.floor(width / resolution);
+  rows = Math.floor(height / resolution);
+  grid = create2dgrid(cols, rows);
+//   populateGrid();
+  firstCell = new CellOfParticles(
+	10000,
+	new GridPosition(Math.floor(rows / 2), 0)
+  );
+  
 }
 
 function draw() {
-	fill(255, 32)
-	circle(mouseX, mouseY, random(20, 50))
+  //   fill(255, 32);
+  //   circle(mouseX, mouseY, random(20, 50));
+  background(255);
+
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < rows; j++) {
+      let x = i * resolution;
+      let y = j * resolution;
+      if (grid[i][j]) {
+        fill(51);
+        stroke(0);
+        rect(x, y, resolution - 1, resolution - 1); // -1 pixle to get boarders
+      }
+    }
+  }
 }
 
-window['setup'] = setup
-window['draw'] = draw
+function create2dgrid(cols: number, rows: number) {
+  let arr = new Array(cols);
+  for (let col = 0; col < arr.length; col++) {
+    arr[col] = new Array(rows);
+  }
+  return arr;
+}
+
+function populateGrid() {
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < rows; j++) {
+      grid[i][j] = floor(random(2));
+    }
+  }
+}
+
+window["setup"] = setup;
+window["draw"] = draw;
