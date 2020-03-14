@@ -37,7 +37,7 @@ export class Simulator {
     let oldGrid = this.grid;
     console.table(oldGrid.grid);
     // create new array from old
-    const newGrid = new Grid(10, 10);
+    const newGrid = new Grid(oldGrid.numberOfRows, oldGrid.numberOfColums);
 
     let numbOfColums = oldGrid.numberOfColums;
     let numbOfRows = oldGrid.numberOfRows;
