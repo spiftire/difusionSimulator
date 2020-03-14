@@ -95,35 +95,10 @@ export class Simulator {
   calculateSplitCell(cell: CellOfParticles, direction: Direction): number {
     let chance = 0;
     if (cell.numberOfParticles > this.TRESHOLD_FOR_SPLIT) {
-      switch (direction) {
-        case Direction.Right:
-          chance = this.chances.right;
-          break;
-
-        case Direction.Left:
-          chance = this.chances.left;
-          break;
-
-        case Direction.Up:
-          chance = this.chances.up;
-          break;
-
-        case Direction.Down:
-          chance = this.chances.down;
-          break;
-        default:
-          chance = 0;
-          break;
-      }
-
-      return (cell.numberOfParticles * chance) / 100;
-
-      // let right = (cell.numberOfParticles * this.chances.right) / 100;
-      // let left = (cell.numberOfParticles * this.chances.left) / 100;
-      // let down = (cell.numberOfParticles * this.chances.down) / 100;
-      // let up = (cell.numberOfParticles * this.chances.up) / 100;
-      // return { rightCell, leftCell, downCell, upCell };
+      chance = this.chances[direction];  
     }
+
+    return (cell.numberOfParticles * chance) / 100; // todo use totalchance
   }
 
   splitCell(numberToSplitAway: number, cell: CellOfParticles): CellOfParticles {
