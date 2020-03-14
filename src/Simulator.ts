@@ -117,6 +117,10 @@ export class Simulator {
   ): GridPosition {
     const x = startPosition.x;
     const y = startPosition.y;
+    console.log("y: " + y);
+    console.log(direction);
+    
+    
     let newX: number = x,
       newY: number = y;
     switch (direction) {
@@ -133,13 +137,13 @@ export class Simulator {
         break;
 
       case Direction.Up:
-        if (y <= this.TOP_EDGE) {
+        if (y >= this.TOP_EDGE) {
           newY = y - 1;
         }
         break;
 
       case Direction.Down:
-        if (y >= this.BOTTOM_EDGE) {
+        if (y <= this.BOTTOM_EDGE) {
           newY = y + 1;
         }
         break;
