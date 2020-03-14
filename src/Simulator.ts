@@ -46,10 +46,10 @@ export class Simulator {
     for (let y = 0; y < numbOfColums; y++) {
       for (let x = 0; x < numbOfRows; x++) {
         counter++;
-        console.warn("loop counter" + counter);
+        // console.warn("loop counter" + counter);
         let cell = oldGrid.getPositionContent(x, y);
         if (cell != null && cell.numberOfParticles > 0) {
-          console.log(cell);
+          // console.log(cell);
 
           const numberOfParticles = cell.numberOfParticles;
 
@@ -59,10 +59,10 @@ export class Simulator {
               numberOfParticles,
               direction
             );
-            console.log("amount to split: " + splitAmount);
+            // console.log("amount to split: " + splitAmount);
 
             // if (direction != Direction.Stay) {
-              console.log("if Not stay direction: " + direction);
+              // console.log("if Not stay direction: " + direction);
 
               let newPosition = this.getNewCellPosition(
                 <Direction>(<unknown>direction),
