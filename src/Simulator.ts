@@ -5,8 +5,8 @@ import { Grid } from "./Grid";
 export class Simulator {
   readonly TRESHOLD_FOR_SPLIT = 1000;
   readonly RIGHT_EDGE: number;
-  readonly LEFT_EDGE = 0;
-  readonly TOP_EDGE = 0;
+  readonly LEFT_EDGE:number = 0;
+  readonly TOP_EDGE:number = 0;
   readonly BOTTOM_EDGE: number;
   totalChanse = 0;
   cells: Array<CellOfParticles>;
@@ -27,7 +27,7 @@ export class Simulator {
     this.BOTTOM_EDGE = this.grid.numberOfRows;
 
     this.totalChanse = this.sumUpChances();
-    let firstCell = new CellOfParticles(10000, new GridPosition(1, 1));
+    let firstCell = new CellOfParticles(10000, new GridPosition(0, 0));
 
     grid.setContentAtPosition(
       firstCell.position.x,
@@ -97,8 +97,8 @@ export class Simulator {
   }
 
   mergeParticleInCell(newCell: CellOfParticles, oldGrid: Grid, newGrid: Grid) {
-    const x = newCell.position.x;
-    const y = newCell.position.y;
+    const x:number = newCell.position.x;
+    const y:number = newCell.position.y;
     // console.log(newCell);
 
     const oldCell = oldGrid.getPositionContent(x, y);
@@ -118,6 +118,7 @@ export class Simulator {
     const x = startPosition.x;
     const y = startPosition.y;
     console.log("y: " + y);
+    console.log("x: " + x);
     console.log(direction);
     
     
@@ -131,19 +132,19 @@ export class Simulator {
         break;
 
       case Direction.Left:
-        if (x >= this.LEFT_EDGE) {
+        if (x != this.LEFT_EDGE) {
           newX = x - 1;
         }
         break;
 
       case Direction.Up:
-        if (y >= this.TOP_EDGE) {
+        if (y != this.TOP_EDGE) {
           newY = y - 1;
         }
         break;
 
       case Direction.Down:
-        if (y <= this.BOTTOM_EDGE) {
+        if (y != this.BOTTOM_EDGE) {
           newY = y + 1;
         }
         break;
@@ -156,6 +157,8 @@ export class Simulator {
 
         break;
     }
+    console.log(`ǸewX: ${newX}, newY: ${newY}`);
+    
     return new GridPosition(newX, newY);
   }
 
