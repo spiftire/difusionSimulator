@@ -61,41 +61,64 @@ export class Simulator {
     // display changes
   }
 
-  setCellPosition(cell:CellOfParticles, direction:Direction, x:number, y:number) {
-    let newX, newY;
-    switch(direction) {
-      case Direction.Right:
-          newX = x + 1;
-          newY= y;
-          break;
+  mergeParticleInCell(newCell: CellOfParticles) {
+    const x = newCell.position.x;
+    const y = newCell.position.y;
 
-        case Direction.Left:
-          newX = x - 1;
-          newY= y;
-          break;
+    const oldCell = this.grid[x][y];
 
-        case Direction.Up:
-          newX = x;
-          newY= y - 1;          
-          break;
-
-        case Direction.Down:
-          newX = x;
-          newY= y + 1;
-          break;
-        default:
-          break;
-        }
-        this.grid[newY][newX] = cell;
+    if (oldCell != null) {
+      oldCell.numberOfParticles += newCell.numberOfParticles;
+    } else {
+      this.grid[x][y] = newCell;
+    }
   }
 
-  calculateSplitCell(cell: CellOfParticles, direction: Direction): number {
+  setCellPosition(
+    cell: CellOfParticles,
+    direction: Direction,
+    y: number,
+    x: number
+  ) {
+    let newX, newY;
+    switch (direction) {
+      case Direction.Right:
+        newX = x + 1;
+        newY = y;
+        break;
+
+      case Direction.Left:
+        newX = x - 1;
+        newY = y;
+        break;
+
+      case Direction.Up:
+        newX = x;
+        newY = y - 1;
+        break;
+
+      case Direction.Down:
+        newX = x;
+        newY = y + 1;
+        break;
+      default:
+        break;
+    }
+    // this.grid[newY][newX] = cell;
+    cell.position.y = newY;
+    cell.position.x = newX;
+  }
+
+  calculateSplitToAmount(orgAmount: number, direction: Direction): number {
     let chance = 0;
-    if (cell.numberOfParticles > this.TRESHOLD_FOR_SPLIT) {
-      chance = this.chances[direction];  
+    if (orgAmount > this.TRESHOLD_FOR_SPLIT) {
+      console.log("direction: " + direction);
+
+      chance = this.chances.get(direction);
+      console.log("Split chance: " + chance);
     }
 
-    return (cell.numberOfParticles * chance) / 100; // todo use totalchance
+    return (orgAmount * chance) / this.totalChanse; // todo use totalchance
   }
 
   splitCell(numberToSplitAway: number, cell: CellOfParticles): CellOfParticles {
