@@ -1,26 +1,34 @@
 import { CellOfParticles } from "./CellOfParticles";
 
 export class Grid {
-  rows: number; // y
-  cols: number; // x
+  numberOfRows: number; // y
+  numberOfColums: number; // x
   grid: CellOfParticles[][];
 
   constructor(numberOfRows: number, numberOfColums: number) {
-    this.rows = numberOfRows;
-    this.cols = numberOfColums;
-    this.grid = this.create2dgrid(this.cols, this.rows);
+    this.numberOfRows = numberOfRows;
+    this.numberOfColums = numberOfColums;
+    this.grid = this.create2dgrid(this.numberOfColums, this.numberOfRows);
   }
 
-  create2dgrid(cols: number, rows: number): Array<Array<CellOfParticles>> {
-    let arr = new Array(cols);
+  private create2dgrid(cols: number, rows: number): Array<Array<CellOfParticles>> {
+    let arr = new Array(rows);
     for (let col = 0; col < arr.length; col++) {
-      arr[col] = new Array(rows);
+      arr[col] = new Array(cols);
       const temprows = arr[col];
       for (let i = 0; i < temprows.length; i++) {
         temprows[i] = null;
       }
     }
     return arr;
+  }
+
+  getGrid() {
+      return this.grid;
+  }
+
+  setGrid(grid: CellOfParticles[][]) {
+      this.grid = grid;
   }
 
   setPositionContent(
@@ -32,6 +40,6 @@ export class Grid {
   }
 
   getPositionContent(x: number, y: number): CellOfParticles {
-    return this.grid[y][x];
+    return this.grid[x][y];
   }
 }
