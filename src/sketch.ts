@@ -3,6 +3,7 @@
 import { CellOfParticles } from "./CellOfParticles";
 import { GridPosition } from "./GridPosition";
 import { Simulator } from "./Simulator";
+import { Grid } from "./Grid";
 
 require("p5");
 let resolution = 20;
@@ -21,26 +22,10 @@ function setup() {
 
   cols = Math.floor(width / resolution);
   rows = Math.floor(height / resolution);
-  grid = create2dgrid(cols, rows);
+  grid = new Grid(rows, cols).getGrid();
   
   simulator = new Simulator(grid);
-  //   populateGrid();
-  // firstCell = new CellOfParticles(
-  //   10000,
-  //   new GridPosition(Math.floor(rows / 2), 0)
-  // );
-
-  // grid[firstCell.position.y][firstCell.position.x] = firstCell;
-  
-  // console.table(grid);
-  console.log(simulator);
-  
-
-
   simulator.step();
-
-  
-
 }
 
 function draw() {
@@ -61,21 +46,6 @@ function drawCell() {
 	// 		}
 	// 	}
 	// }
-}
-
-function create2dgrid(
-  cols: number,
-  rows: number
-): Array<Array<CellOfParticles>> {
-  let arr = new Array(cols);
-  for (let col = 0; col < arr.length; col++) {
-    arr[col] = new Array(rows);
-    const temprows = arr[col];
-    for(let i = 0; i< temprows.length; i++) {
-      temprows[i] = null;
-    }
-  }
-  return arr;
 }
 
 window["setup"] = setup;
