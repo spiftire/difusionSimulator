@@ -55,23 +55,27 @@ export class Simulator {
 
           // looping through all the chanses to get split amount
           this.chances.forEach((_: number, direction: Direction) => {
-            const splitAmount = this.calculateSplitToAmount(
+            // calculate split
+            const splitAmount = this.calculateAmountToSplit(
               numberOfParticles,
               direction
             );
             // console.log("amount to split: " + splitAmount);
 
             // if (direction != Direction.Stay) {
-              // console.log("if Not stay direction: " + direction);
+            // console.log("if Not stay direction: " + direction);
 
-              let newPosition = this.getNewCellPosition(
-                <Direction>(<unknown>direction),
-                cell.position
-              );
-              let newCell = this.splitCell(splitAmount, cell, newPosition);
-              console.log(newCell);
+            // put new cells into position
+            let newPosition = this.getNewCellPosition(
+              <Direction>(<unknown>direction),
+              cell.position
+            );
 
-              this.mergeParticleInCell(newCell, oldGrid, newGrid);
+            // if there is something at that position add it
+            let newCell = this.splitCell(splitAmount, cell, newPosition);
+            console.log(newCell);
+
+            this.mergeParticleInCell(newCell, oldGrid, newGrid);
             // }
           });
         }
@@ -81,9 +85,6 @@ export class Simulator {
     oldGrid = newGrid;
     console.table(oldGrid.grid);
 
-    // calculate split
-    // put new cells into position
-    // if there is something at that position add it
     // if on edge calculate new temp chanses
     // display changes
   }
@@ -140,16 +141,16 @@ export class Simulator {
     return new GridPosition(newX, newY);
   }
 
-  calculateSplitToAmount(orgAmount: number, direction: Direction): number {
+  calculateAmountToSplit(orgAmount: number, direction: Direction): number {
     let chance = 0;
     if (orgAmount > this.TRESHOLD_FOR_SPLIT) {
-      console.log("direction: " + direction);
+      // console.log("direction: " + direction);
 
       chance = this.chances.get(direction);
-      console.log("Split chance: " + chance);
+      // console.log("Split chance: " + chance);
     }
 
-    return (orgAmount * chance) / this.totalChanse; // todo use totalchance
+    return (orgAmount * chance) / this.totalChanse;
   }
 
   splitCell(
