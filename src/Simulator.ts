@@ -7,13 +7,7 @@ export class Simulator {
   cells: Array<CellOfParticles>;
   grid: Array<Array<CellOfParticles>>;
 
-  chances = {
-    left: 20,
-    right: 20,
-    down: 30,
-    up: 5,
-    stay: 25
-  };
+  chances = new Collections.Dictionary<Direction, number>();
 
   constructor(
     // cells: Array<CellOfParticles>,
@@ -28,6 +22,12 @@ export class Simulator {
     );
 
     grid[firstCell.position.y][firstCell.position.x] = firstCell;
+
+    this.chances.setValue(Direction.Left, 20);
+    this.chances.setValue(Direction.Right, 20);
+    this.chances.setValue(Direction.Down, 30);
+    this.chances.setValue(Direction.Up, 5);
+    this.chances.setValue(Direction.Stay, 25);
   }
 
   init() {
