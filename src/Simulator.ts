@@ -141,3 +141,11 @@ export class Simulator {
     return totalChance;
   }
 }
+
+enum Direction {
+  Up,
+  Down,
+  Left,
+  Right,
+  Stay
+}
