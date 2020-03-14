@@ -106,14 +106,11 @@ export class Simulator {
     return new CellOfParticles(numberToSplitAway, new GridPosition(0, 0));
   }
 
-  sumUpChances(chances: object): number {
+  sumUpChances(): number {
     let totalChance = 0;
-    // const enteries: any = Object.keys(chances).map(function(key) {
-    // 	return chances[]
-    // })
-    // enteries.forEach((value: any) => {
-    // 	totalChance += value
-    // })
+    this.chances.forEach((chance, _) => {
+      totalChance += chance;
+    });
     return totalChance;
   }
 }
