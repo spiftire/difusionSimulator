@@ -31,7 +31,7 @@ export class Grid {
       this.grid = grid;
   }
 
-  setPositionContent(
+  setContentAtPosition(
     x: number,
     y: number,
     cellOfParticles: CellOfParticles

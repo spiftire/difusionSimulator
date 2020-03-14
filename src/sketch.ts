@@ -16,7 +16,8 @@ const cells = new Array<CellOfParticles>();
 cells.push(firstCell);
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+//   createCanvas(windowWidth, windowHeight);
+  createCanvas(200, 200);
   background(0);
   noStroke();
 

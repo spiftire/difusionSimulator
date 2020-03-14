@@ -20,12 +20,9 @@ export class Simulator {
 
     this.grid = grid;
     this.totalChanse = this.sumUpChances();
-    let firstCell = new CellOfParticles(
-      10000,
-      new GridPosition(Math.floor(this.grid.numberOfRows / 2), 3)
-    );
+    let firstCell = new CellOfParticles(10000, new GridPosition(1, 1));
 
-    grid.setPositionContent(
+    grid.setContentAtPosition(
       firstCell.position.x,
       firstCell.position.y,
       firstCell
@@ -37,35 +34,34 @@ export class Simulator {
   }
 
   step() {
-    const oldGrid = this.grid;
+    let oldGrid = this.grid;
     console.table(oldGrid.grid);
     // create new array from old
-    const tempArray = oldGrid;
+    const newGrid = new Grid(10, 10);
 
     let numbOfColums = oldGrid.numberOfColums;
     let numbOfRows = oldGrid.numberOfRows;
     /// loop thoough old array
     let counter = 0;
-    for (let x = 0; x < numbOfColums; x++) {
-      for (let y = 0; y < numbOfRows; y++) {
+    for (let y = 0; y < numbOfColums; y++) {
+      for (let x = 0; x < numbOfRows; x++) {
         counter++;
-        // console.warn("loop counter" + counter);
-        let cell = this.grid.getPositionContent(x, y);
+        console.warn("loop counter" + counter);
+        let cell = oldGrid.getPositionContent(x, y);
         if (cell != null && cell.numberOfParticles > 0) {
           console.log(cell);
 
           const numberOfParticles = cell.numberOfParticles;
 
           // looping through all the chanses to get split amount
-            this.chances.forEach((_: number, direction: Direction) => {
-
+          this.chances.forEach((_: number, direction: Direction) => {
             const splitAmount = this.calculateSplitToAmount(
               numberOfParticles,
               direction
             );
             console.log("amount to split: " + splitAmount);
 
-            if (direction != Direction.Stay) {
+            // if (direction != Direction.Stay) {
               console.log("if Not stay direction: " + direction);
 
               let newPosition = this.getNewCellPosition(
@@ -75,13 +71,16 @@ export class Simulator {
               let newCell = this.splitCell(splitAmount, cell, newPosition);
               console.log(newCell);
 
-              this.mergeParticleInCell(newCell, oldGrid);
-            }
+              this.mergeParticleInCell(newCell, oldGrid, newGrid);
+            // }
           });
         }
       }
     }
     console.table(oldGrid.grid);
+    oldGrid = newGrid;
+    console.table(oldGrid.grid);
+
     // calculate split
     // put new cells into position
     // if there is something at that position add it
@@ -89,18 +88,19 @@ export class Simulator {
     // display changes
   }
 
-  mergeParticleInCell(newCell: CellOfParticles, grid: Grid) {
+  mergeParticleInCell(newCell: CellOfParticles, oldGrid: Grid, newGrid: Grid) {
     const x = newCell.position.x;
     const y = newCell.position.y;
     // console.log(newCell);
 
-    const oldCell = grid.getPositionContent(x, y);
+    const oldCell = oldGrid.getPositionContent(x, y);
+    console.log("The Old cell" + oldCell);
 
     if (oldCell != null && oldCell.numberOfParticles > 0) {
-      oldCell.numberOfParticles += newCell.numberOfParticles;
+      newCell.numberOfParticles += oldCell.numberOfParticles;
     } else {
-      grid.setPositionContent(x, y, newCell);
     }
+    newGrid.setContentAtPosition(x, y, newCell);
   }
 
   getNewCellPosition(
@@ -129,6 +129,10 @@ export class Simulator {
       case Direction.Down:
         newX = x;
         newY = y + 1;
+        break;
+      case Direction.Stay:
+        newX = x;
+        newY = y;
         break;
       default:
         break;
