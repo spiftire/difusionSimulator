@@ -1,5 +1,6 @@
 import { CellOfParticles } from "./CellOfParticles";
 import { GridPosition } from "./GridPosition";
+import * as Collections from "typescript-collections";
 
 export class Simulator {
   readonly TRESHOLD_FOR_SPLIT = 1000;
