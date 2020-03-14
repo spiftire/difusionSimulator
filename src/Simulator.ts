@@ -4,6 +4,10 @@ import { Grid } from "./Grid";
 
 export class Simulator {
   readonly TRESHOLD_FOR_SPLIT = 1000;
+  readonly RIGHT_EDGE: number;
+  readonly LEFT_EDGE = 0;
+  readonly TOP_EDGE = 0;
+  readonly BOTTOM_EDGE: number;
   totalChanse = 0;
   cells: Array<CellOfParticles>;
   grid: Grid;
@@ -19,6 +23,9 @@ export class Simulator {
     this.chances.set(Direction.Stay, 25);
 
     this.grid = grid;
+    this.RIGHT_EDGE = this.grid.numberOfColums;
+    this.BOTTOM_EDGE = this.grid.numberOfRows;
+
     this.totalChanse = this.sumUpChances();
     let firstCell = new CellOfParticles(10000, new GridPosition(1, 1));
 
@@ -110,32 +117,39 @@ export class Simulator {
   ): GridPosition {
     const x = startPosition.x;
     const y = startPosition.y;
-    let newX: number, newY: number;
+    let newX: number = x,
+      newY: number = y;
     switch (direction) {
       case Direction.Right:
-        newX = x + 1;
-        newY = y;
+        if (x <= this.RIGHT_EDGE) {
+          newX = x + 1;
+        }
         break;
 
       case Direction.Left:
-        newX = x - 1;
-        newY = y;
+        if (x >= this.LEFT_EDGE) {
+          newX = x - 1;
+        }
         break;
 
       case Direction.Up:
-        newX = x;
-        newY = y - 1;
+        if (y <= this.TOP_EDGE) {
+          newY = y - 1;
+        }
         break;
 
       case Direction.Down:
-        newX = x;
-        newY = y + 1;
+        if (y >= this.BOTTOM_EDGE) {
+          newY = y + 1;
+        }
         break;
       case Direction.Stay:
         newX = x;
         newY = y;
         break;
       default:
+        console.log("Default state in getNewCellPosition not implemented");
+
         break;
     }
     return new GridPosition(newX, newY);
