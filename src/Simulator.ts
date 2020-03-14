@@ -105,9 +105,12 @@ export class Simulator {
     console.log("The Old cell" + oldCell);
 
     if (oldCell != null && oldCell.numberOfParticles > 0) {
+      console.log(`NewCell.Particles = ${newCell.numberOfParticles}`);
+      
       newCell.numberOfParticles += oldCell.numberOfParticles;
     } else {
     }
+    console.log(`NewCell.Particles = ${newCell.numberOfParticles}`);
     newGrid.setContentAtPosition(x, y, newCell);
   }
 
@@ -126,25 +129,26 @@ export class Simulator {
       newY: number = y;
     switch (direction) {
       case Direction.Right:
-        if (x <= this.RIGHT_EDGE) {
+        if (x < this.RIGHT_EDGE) {
           newX = x + 1;
         }
         break;
 
       case Direction.Left:
-        if (x != this.LEFT_EDGE) {
+        if (x >this.LEFT_EDGE) {
           newX = x - 1;
         }
         break;
 
       case Direction.Up:
-        if (y != this.TOP_EDGE) {
+        console.log("up y: "+y);
+        if (y > this.TOP_EDGE) {
           newY = y - 1;
         }
         break;
 
       case Direction.Down:
-        if (y != this.BOTTOM_EDGE) {
+        if (y < this.BOTTOM_EDGE) {
           newY = y + 1;
         }
         break;
