@@ -9,7 +9,7 @@ require("p5");
 let resolution = 20;
 let cols: number;
 let rows: number;
-let grid: Array<Array<CellOfParticles>>;
+let grid: Grid;
 let firstCell: CellOfParticles;
 let simulator;
 const cells = new Array<CellOfParticles>();
@@ -22,7 +22,7 @@ function setup() {
 
   cols = Math.floor(width / resolution);
   rows = Math.floor(height / resolution);
-  grid = new Grid(rows, cols).getGrid();
+  grid = new Grid(rows, cols);
   
   simulator = new Simulator(grid);
   simulator.step();
