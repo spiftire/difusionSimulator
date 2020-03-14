@@ -64,7 +64,7 @@ export class Simulator {
     // display changes
   }
 
-  setCellPosition(cell:CellOfParticles, direction:Direction, x, y) {
+  setCellPosition(cell:CellOfParticles, direction:Direction, x:number, y:number) {
     let newX, newY;
     switch(direction) {
       case Direction.Right:
