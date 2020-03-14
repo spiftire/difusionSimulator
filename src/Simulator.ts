@@ -6,11 +6,11 @@ export class Simulator {
   readonly TRESHOLD_FOR_SPLIT = 1000;
   totalChanse = 0;
   cells: Array<CellOfParticles>;
-  grid: Array<Array<CellOfParticles>>;
+  grid: Grid;
 
   chances: Map<Direction, number>;
 
-  constructor(
+  constructor(grid: Grid) {
     this.chances = new Map();
     this.chances.set(Direction.Left, 20);
     this.chances.set(Direction.Right, 20);
@@ -22,10 +22,14 @@ export class Simulator {
     this.totalChanse = this.sumUpChances();
     let firstCell = new CellOfParticles(
       10000,
-      new GridPosition(Math.floor(grid[0].length / 2), 0)
+      new GridPosition(Math.floor(this.grid.numberOfRows / 2), 3)
     );
 
-    grid[firstCell.position.y][firstCell.position.x] = firstCell;
+    grid.setPositionContent(
+      firstCell.position.x,
+      firstCell.position.y,
+      firstCell
+    );
   }
 
   init() {
@@ -33,54 +37,79 @@ export class Simulator {
   }
 
   step() {
-    console.log("in the step");
-
+    const oldGrid = this.grid;
+    console.table(oldGrid.grid);
     // create new array from old
-    const tempArray = this.grid;
+    const tempArray = oldGrid;
 
-    let cols = this.grid;
-    let rows = cols.entries;
+    let numbOfColums = oldGrid.numberOfColums;
+    let numbOfRows = oldGrid.numberOfRows;
     /// loop thoough old array
-    for (let i = 0; i < cols.length; i++) {
-      for (let j = 0; j < cols[i].length; j++) {
-        if (this.grid[i][j] instanceof CellOfParticles) {
-          console.log(this.grid[i][j]);
+    let counter = 0;
+    for (let x = 0; x < numbOfColums; x++) {
+      for (let y = 0; y < numbOfRows; y++) {
+        counter++;
+        // console.warn("loop counter" + counter);
+        let cell = this.grid.getPositionContent(x, y);
+        if (cell != null && cell.numberOfParticles > 0) {
+          console.log(cell);
 
-          let cell = this.grid[i][j];
-          const newCells = this.calculateSplitCell(cell);
-		  console.log();
+          const numberOfParticles = cell.numberOfParticles;
 
-          //   this.setPositionOfNewCells(newCells, i, j);
+          // looping through all the chanses to get split amount
+            this.chances.forEach((_: number, direction: Direction) => {
+
+            const splitAmount = this.calculateSplitToAmount(
+              numberOfParticles,
+              direction
+            );
+            console.log("amount to split: " + splitAmount);
+
+            if (direction != Direction.Stay) {
+              console.log("if Not stay direction: " + direction);
+
+              let newPosition = this.getNewCellPosition(
+                <Direction>(<unknown>direction),
+                cell.position
+              );
+              let newCell = this.splitCell(splitAmount, cell, newPosition);
+              console.log(newCell);
+
+              this.mergeParticleInCell(newCell, oldGrid);
+            }
+          });
         }
       }
     }
-    // calculate splitt
+    console.table(oldGrid.grid);
+    // calculate split
     // put new cells into position
     // if there is something at that position add it
     // if on edge calculate new temp chanses
     // display changes
   }
 
-  mergeParticleInCell(newCell: CellOfParticles) {
+  mergeParticleInCell(newCell: CellOfParticles, grid: Grid) {
     const x = newCell.position.x;
     const y = newCell.position.y;
+    // console.log(newCell);
 
-    const oldCell = this.grid[x][y];
+    const oldCell = grid.getPositionContent(x, y);
 
-    if (oldCell != null) {
+    if (oldCell != null && oldCell.numberOfParticles > 0) {
       oldCell.numberOfParticles += newCell.numberOfParticles;
     } else {
-      this.grid[x][y] = newCell;
+      grid.setPositionContent(x, y, newCell);
     }
   }
 
-  setCellPosition(
-    cell: CellOfParticles,
+  getNewCellPosition(
     direction: Direction,
-    y: number,
-    x: number
-  ) {
-    let newX, newY;
+    startPosition: GridPosition
+  ): GridPosition {
+    const x = startPosition.x;
+    const y = startPosition.y;
+    let newX: number, newY: number;
     switch (direction) {
       case Direction.Right:
         newX = x + 1;
@@ -104,9 +133,7 @@ export class Simulator {
       default:
         break;
     }
-    // this.grid[newY][newX] = cell;
-    cell.position.y = newY;
-    cell.position.x = newX;
+    return new GridPosition(newX, newY);
   }
 
   calculateSplitToAmount(orgAmount: number, direction: Direction): number {
@@ -121,9 +148,13 @@ export class Simulator {
     return (orgAmount * chance) / this.totalChanse; // todo use totalchance
   }
 
-  splitCell(numberToSplitAway: number, cell: CellOfParticles): CellOfParticles {
-    cell.numberOfParticles -= numberToSplitAway;
-    return new CellOfParticles(numberToSplitAway, new GridPosition(0, 0));
+  splitCell(
+    numberToSplitAway: number,
+    cellToSplit: CellOfParticles,
+    positionOfNewCell: GridPosition
+  ): CellOfParticles {
+    cellToSplit.numberOfParticles -= numberToSplitAway;
+    return new CellOfParticles(numberToSplitAway, positionOfNewCell);
   }
 
   sumUpChances(): number {
