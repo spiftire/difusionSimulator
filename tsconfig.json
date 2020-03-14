@@ -1,13 +1,13 @@
 {
-	"compilerOptions": {
-		"outDir": "./dist/",
-		"sourceMap": true,
-		"noImplicitAny": false,
-		"suppressImplicitAnyIndexErrors": true,
-		"module": "es6",
-		"moduleResolution": "node",
-		"target": "es5",
-		"jsx": "react",
-		"allowJs": true
-	}
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "module": "es6",
+    "moduleResolution": "node",
+    "target": "es5",
+    "jsx": "react",
+    "allowJs": true
   }
+}
