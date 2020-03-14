@@ -63,24 +63,65 @@ export class Simulator {
     // display changes
   }
 
-  setPositionOfNewCells(newCells, oldX: number, oldY: number) {
-    if (oldX <= 0) {
-    }
+  setCellPosition(cell:CellOfParticles, direction:Direction, x, y) {
+    let newX, newY;
+    switch(direction) {
+      case Direction.Right:
+          newX = x + 1;
+          newY= y;
+          break;
+
+        case Direction.Left:
+          newX = x - 1;
+          newY= y;
+          break;
+
+        case Direction.Up:
+          newX = x;
+          newY= y - 1;          
+          break;
+
+        case Direction.Down:
+          newX = x;
+          newY= y + 1;
+          break;
+        default:
+          break;
+        }
+        this.grid[newY][newX] = cell;
   }
 
-  calculateSplitCell(cell: CellOfParticles): object {
+  calculateSplitCell(cell: CellOfParticles, direction: Direction): number {
+    let chance = 0;
     if (cell.numberOfParticles > this.TRESHOLD_FOR_SPLIT) {
-      let right = (cell.numberOfParticles * this.chances.right) / 100;
-      let left = (cell.numberOfParticles * this.chances.left) / 100;
-      let down = (cell.numberOfParticles * this.chances.down) / 100;
-      let up = (cell.numberOfParticles * this.chances.up) / 100;
+      switch (direction) {
+        case Direction.Right:
+          chance = this.chances.right;
+          break;
 
-      let rightCell = this.splitCell(right, cell);
-      let leftCell = this.splitCell(left, cell);
-      let downCell = this.splitCell(down, cell);
-      let upCell = this.splitCell(up, cell);
+        case Direction.Left:
+          chance = this.chances.left;
+          break;
 
-      return { rightCell, leftCell, downCell, upCell };
+        case Direction.Up:
+          chance = this.chances.up;
+          break;
+
+        case Direction.Down:
+          chance = this.chances.down;
+          break;
+        default:
+          chance = 0;
+          break;
+      }
+
+      return (cell.numberOfParticles * chance) / 100;
+
+      // let right = (cell.numberOfParticles * this.chances.right) / 100;
+      // let left = (cell.numberOfParticles * this.chances.left) / 100;
+      // let down = (cell.numberOfParticles * this.chances.down) / 100;
+      // let up = (cell.numberOfParticles * this.chances.up) / 100;
+      // return { rightCell, leftCell, downCell, upCell };
     }
   }
 
