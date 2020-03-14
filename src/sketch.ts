@@ -27,6 +27,12 @@ function setup() {
   
   simulator = new Simulator(grid);
   simulator.step();
+  simulator.step();
+  simulator.step();
+  simulator.step();
+  simulator.step();
+  simulator.step();
+  simulator.step();
 }
 
 function draw() {
