@@ -11,7 +11,7 @@ export class Grid {
     this.grid = this.create2dgrid(this.numberOfColums, this.numberOfRows);
   }
 
-  private create2dgrid(cols: number, rows: number): Array<Array<CellOfParticles>> {
+  private create2dgrid(cols: number, rows: number): CellOfParticles[][] {
     let arr = new Array(rows);
     for (let col = 0; col < arr.length; col++) {
       arr[col] = new Array(cols);
@@ -23,7 +23,7 @@ export class Grid {
     return arr;
   }
 
-  getGrid() {
+  getGrid(): CellOfParticles[][] {
       return this.grid;
   }
 
