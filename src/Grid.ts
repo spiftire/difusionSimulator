@@ -24,24 +24,20 @@ export class Grid {
   }
 
   getGrid(): CellOfParticles[][] {
-      return this.grid;
+    return this.grid;
   }
 
   setGrid(grid: CellOfParticles[][]) {
-      this.grid = grid;
+    this.grid = grid;
   }
 
-  setContentAtPosition(
-    x: number,
-    y: number,
-    cellOfParticles: CellOfParticles
-  ): void {
+  setContentAtPosition(x: number, y: number, cellOfParticles: CellOfParticles): void {
     this.grid[y][x] = cellOfParticles;
   }
 
   getPositionContent(x: number, y: number): CellOfParticles {
-    //   console.log("x, y :" + x + ", " + y);
-      
+    // console.log("x, y :" + x + ", " + y);
+
     return this.grid[y][x];
   }
 }
