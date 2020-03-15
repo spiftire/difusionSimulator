@@ -26,18 +26,14 @@ function map(
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  //   createCanvas(200, 200);
   background(0);
   noStroke();
 
   cols = Math.floor(width / resolution);
   rows = Math.floor(height / resolution);
   grid = new Grid(rows, cols);
-  
+
   simulator = new Simulator(grid);
-  simulator.step();
-  simulator.step();
-  simulator.step();
   simulator.step();
   simulator.step();
   simulator.step();
@@ -51,17 +47,17 @@ function draw() {
 }
 
 function drawCell() {
-	// for (let i = 0; i < cols; i++) {
-	// 	for (let j = 0; j < rows; j++) {
-	// 		let x = i * resolution;
-	// 		let y = j * resolution;
-	// 		if (grid[i][j] instanceof CellOfParticles) {
-	// 			fill(51);
-	// 			stroke(0);
-	// 			rect(x, y, resolution - 1, resolution - 1);
-	// 		}
-	// 	}
-	// }
+  // for (let i = 0; i < cols; i++) {
+  // 	for (let j = 0; j < rows; j++) {
+  // 		let x = i * resolution;
+  // 		let y = j * resolution;
+  // 		if (grid[i][j] instanceof CellOfParticles) {
+  // 			fill(51);
+  // 			stroke(0);
+  // 			rect(x, y, resolution - 1, resolution - 1);
+  // 		}
+  // 	}
+  // }
 }
 
 window["setup"] = setup;
