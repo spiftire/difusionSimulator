@@ -1,7 +1,6 @@
 /// <reference path="../node_modules/@types/p5/global.d.ts" />
 
 import { CellOfParticles } from "./CellOfParticles";
-import { GridPosition } from "./GridPosition";
 import { Simulator } from "./Simulator";
 import { Grid } from "./Grid";
 
