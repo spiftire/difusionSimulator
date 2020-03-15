@@ -87,7 +87,7 @@ export class Simulator {
   }
 
   mergeParticleInCell(newCell: CellOfParticles, oldGrid: Grid, newGrid: Grid) {
-    //check if there already is a cell at new position
+    // check if there already is a cell at new position
     // if yes merge them, if no insert new cell.
     // if it is not posible to move stay on current position, check if there is particles in ocupied spot (in new grid)
     // if yes merge them, if not insert.
@@ -95,14 +95,10 @@ export class Simulator {
     const x: number = newCell.position.x;
     const y: number = newCell.position.y;
     let result: CellOfParticles = newCell;
-    // console.log(newCell);
-
     const cellAlreadyThere = oldGrid.getPositionContent(x, y);
     const cellInNewGrid = newGrid.getPositionContent(x, y);
-    // console.log("The Old cell" + cellAlreadyThere);
 
     if (cellAlreadyThere != null && cellAlreadyThere.numberOfParticles > 0) {
-      // console.log(`NewCell.Particles = ${newCell.numberOfParticles}`);
       let particles =
         newCell.numberOfParticles + cellAlreadyThere.numberOfParticles;
       let position = newCell.position;
@@ -115,7 +111,6 @@ export class Simulator {
       // newGrid = tempGrid;
       // newCell.numberOfParticles += cellInNewGrid.numberOfParticles + cellAlreadyThere.numberOfParticles;
     }
-    // console.log(`NewCell.Particles = ${newCell.numberOfParticles}`);
     newGrid.setContentAtPosition(x, y, result);
   }
 
