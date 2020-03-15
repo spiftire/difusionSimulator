@@ -48,7 +48,7 @@ export class Simulator {
     // loop thoough old array
     for (let y = 0; y < numbOfColums; y++) {
       for (let x = 0; x < numbOfRows; x++) {
-        let cell = oldGrid.getPositionContent(x, y);
+        let cell = oldGrid.getPositionContent(y, x);
         if (cell != null && cell.numberOfParticles > 0) {
           const numberOfParticles = cell.numberOfParticles;
 
