@@ -15,9 +15,19 @@ let simulator;
 const cells = new Array<CellOfParticles>();
 cells.push(firstCell);
 
+function map(
+  value: number,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number
+): number {
+  return ((value - x1) * (y2 - x2)) / (y1 - x1) + x2;
+}
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
-//   createCanvas(200, 200);
+  //   createCanvas(200, 200);
   background(0);
   noStroke();
 
