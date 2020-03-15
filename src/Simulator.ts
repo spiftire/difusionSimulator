@@ -3,10 +3,10 @@ import { GridPosition } from "./GridPosition";
 import { Grid } from "./Grid";
 
 export class Simulator {
-  readonly TRESHOLD_FOR_SPLIT = 1000;
+  readonly TRESHOLD_FOR_SPLIT = 10;
   readonly RIGHT_EDGE: number;
-  readonly LEFT_EDGE:number = 0;
-  readonly TOP_EDGE:number = 0;
+  readonly LEFT_EDGE: number = 0;
+  readonly TOP_EDGE: number = 0;
   readonly BOTTOM_EDGE: number;
   totalChanse = 0;
   cells: Array<CellOfParticles>;
@@ -129,7 +129,7 @@ export class Simulator {
         break;
 
       case Direction.Left:
-        if (x >this.LEFT_EDGE) {
+        if (x > this.LEFT_EDGE) {
           newX = x - 1;
         }
         break;
