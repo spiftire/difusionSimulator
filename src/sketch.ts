@@ -1,18 +1,28 @@
 /// <reference path="../node_modules/@types/p5/global.d.ts" />
 
 import { CellOfParticles } from "./CellOfParticles";
-import { GridPosition } from "./GridPosition";
 import { Simulator } from "./Simulator";
+import { Grid } from "./Grid";
 
 require("p5");
 let resolution = 20;
 let cols: number;
 let rows: number;
-let grid: Array<Array<CellOfParticles>>;
+let grid: Grid;
 let firstCell: CellOfParticles;
 let simulator;
 const cells = new Array<CellOfParticles>();
 cells.push(firstCell);
+
+function map(
+  value: number,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number
+): number {
+  return ((value - x1) * (y2 - x2)) / (y1 - x1) + x2;
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -21,46 +31,33 @@ function setup() {
 
   cols = Math.floor(width / resolution);
   rows = Math.floor(height / resolution);
-  grid = create2dgrid(cols, rows);
-  console.table(grid);
-  
-  simulator = new Simulator(cells, grid);
-  //   populateGrid();
-  firstCell = new CellOfParticles(
-    10000,
-    new GridPosition(Math.floor(rows / 2), 0)
-  );
+  grid = new Grid(rows, cols);
 
-  grid[10][0] = firstCell;
-  
-
+  simulator = new Simulator(grid);
+  simulator.step();
+  simulator.step();
+  simulator.step();
+  simulator.step();
 }
 
 function draw() {
   background(255);
 
-  for (let i = 0; i < cols; i++) {
-    for (let j = 0; j < rows; j++) {
-      let x = i * resolution;
-      let y = j * resolution;
-      if (grid[i][j] instanceof CellOfParticles) {
-        fill(51);
-        stroke(0);
-        rect(x, y, resolution - 1, resolution - 1); // -1 pixle to get boarders
-      }
-    }
-  }
+  drawCell();
 }
 
-function create2dgrid(
-  cols: number,
-  rows: number
-): Array<Array<CellOfParticles>> {
-  let arr = new Array(cols);
-  for (let col = 0; col < arr.length; col++) {
-    arr[col] = new Array(rows);
-  }
-  return arr;
+function drawCell() {
+  // for (let i = 0; i < cols; i++) {
+  // 	for (let j = 0; j < rows; j++) {
+  // 		let x = i * resolution;
+  // 		let y = j * resolution;
+  // 		if (grid[i][j] instanceof CellOfParticles) {
+  // 			fill(51);
+  // 			stroke(0);
+  // 			rect(x, y, resolution - 1, resolution - 1);
+  // 		}
+  // 	}
+  // }
 }
 
 window["setup"] = setup;
