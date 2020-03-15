@@ -29,11 +29,7 @@ export class Simulator {
     this.totalChanse = this.sumUpChances();
     let firstCell = new CellOfParticles(10000, new GridPosition(8, 0));
 
-    grid.setContentAtPosition(
-      firstCell.position.x,
-      firstCell.position.y,
-      firstCell
-    );
+    grid.setContentAtPosition(firstCell.position.x, firstCell.position.y, firstCell);
   }
 
   init() {
@@ -63,20 +59,16 @@ export class Simulator {
           // looping through all the chanses to get split amount
           this.chances.forEach((_: number, direction: Direction) => {
             // calculate split
-            const splitAmount = this.calculateAmountToSplit(
-              numberOfParticles,
-              direction
-            );
+            const splitAmount = this.calculateAmountToSplit(numberOfParticles, direction);
 
             // put new cells into position
-            let newPosition = this.getNewCellPosition(
-              <Direction>(<unknown>direction),
-              cell.position
-            );
+            let newPosition = this.getNewCellPosition(<Direction>(<unknown>direction), cell.position);
 
             // if there is something at that position add it
             let newCell = this.splitCell(splitAmount, cell, newPosition);
-            if(cell.numberOfParticles<=0) {cell = null};
+            if (cell.numberOfParticles <= 0) {
+              cell = null;
+            }
             this.mergeParticleInCell(newCell, oldGrid, newGrid);
           });
         }
@@ -98,26 +90,18 @@ export class Simulator {
     const cellAlreadyThere = previusGrid.getPositionContent(x, y);
     const cellInNewGrid = newGrid.getPositionContent(x, y);
 
-    if (cellAlreadyThere != null && cellAlreadyThere.numberOfParticles > 0) {
-      let particles =
-        newCell.numberOfParticles + cellAlreadyThere.numberOfParticles;
-      let position = newCell.position;
-      result = new CellOfParticles(particles, position);
-
-      // newCell.numberOfParticles += cellAlreadyThere.numberOfParticles;
-    } else if (cellInNewGrid != null) {
-      // const tempGrid = new Grid(newGrid.numberOfRows, newGrid.numberOfColums);
-      // this.mergeParticleInCell(newCell, newGrid, tempGrid);
-      // newGrid = tempGrid;
-      // newCell.numberOfParticles += cellInNewGrid.numberOfParticles + cellAlreadyThere.numberOfParticles;
+    if (cellAlreadyThere == null) {
+      newGrid.setContentAtPosition(x, y, newCell);
     }
-    newGrid.setContentAtPosition(x, y, result);
+
+    if (cellAlreadyThere != null) {
+      let particles = newCell.numberOfParticles + cellAlreadyThere.numberOfParticles;
+      newCell.numberOfParticles = particles;
+      newGrid.setContentAtPosition(x, y, result);
+    }
   }
 
-  getNewCellPosition(
-    direction: Direction,
-    startPosition: GridPosition
-  ): GridPosition {
+  getNewCellPosition(direction: Direction, startPosition: GridPosition): GridPosition {
     const x = startPosition.x;
     const y = startPosition.y;
     // console.log("y: " + y);
@@ -173,11 +157,7 @@ export class Simulator {
     return (orgAmount * chance) / this.totalChanse;
   }
 
-  splitCell(
-    numberToSplitAway: number,
-    cellToSplit: CellOfParticles,
-    positionOfNewCell: GridPosition
-  ): CellOfParticles {
+  splitCell(numberToSplitAway: number, cellToSplit: CellOfParticles, positionOfNewCell: GridPosition): CellOfParticles {
     cellToSplit.numberOfParticles -= numberToSplitAway;
     return new CellOfParticles(numberToSplitAway, positionOfNewCell);
   }
