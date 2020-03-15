@@ -42,6 +42,6 @@ export class Grid {
   getPositionContent(x: number, y: number): CellOfParticles {
     //   console.log("x, y :" + x + ", " + y);
       
-    return this.grid[x][y];
+    return this.grid[y][x];
   }
 }
