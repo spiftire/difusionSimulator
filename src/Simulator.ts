@@ -27,7 +27,7 @@ export class Simulator {
     this.BOTTOM_EDGE = this.grid.numberOfRows;
 
     this.totalChanse = this.sumUpChances();
-    let firstCell = new CellOfParticles(10000, new GridPosition(0, 0));
+    let firstCell = new CellOfParticles(10000, new GridPosition(8, 0));
 
     grid.setContentAtPosition(
       firstCell.position.x,
@@ -82,31 +82,41 @@ export class Simulator {
         }
       }
     }
-    console.table(oldGrid.grid);
-    oldGrid = newGrid;
-    console.table(oldGrid.grid);
-
-    // if on edge calculate new temp chanses
-    // display changes
+    console.table(newGrid.grid);
+    this.grid = newGrid;
   }
 
   mergeParticleInCell(newCell: CellOfParticles, oldGrid: Grid, newGrid: Grid) {
-    const x:number = newCell.position.x;
-    const y:number = newCell.position.y;
+    //check if there already is a cell at new position
+    // if yes merge them, if no insert new cell.
+    // if it is not posible to move stay on current position, check if there is particles in ocupied spot (in new grid)
+    // if yes merge them, if not insert.
+
+    const x: number = newCell.position.x;
+    const y: number = newCell.position.y;
+    let result: CellOfParticles = newCell;
     // console.log(newCell);
 
-    const oldCell = oldGrid.getPositionContent(x, y);
-    console.log("The Old cell" + oldCell);
+    const cellAlreadyThere = oldGrid.getPositionContent(x, y);
+    const cellInNewGrid = newGrid.getPositionContent(x, y);
     // console.log("The Old cell" + cellAlreadyThere);
 
-    if (oldCell != null && oldCell.numberOfParticles > 0) {
+    if (cellAlreadyThere != null && cellAlreadyThere.numberOfParticles > 0) {
       // console.log(`NewCell.Particles = ${newCell.numberOfParticles}`);
-      
-      newCell.numberOfParticles += oldCell.numberOfParticles;
-    } else {
+      let particles =
+        newCell.numberOfParticles + cellAlreadyThere.numberOfParticles;
+      let position = newCell.position;
+      result = new CellOfParticles(particles, position);
+
+      // newCell.numberOfParticles += cellAlreadyThere.numberOfParticles;
+    } else if (cellInNewGrid != null) {
+      // const tempGrid = new Grid(newGrid.numberOfRows, newGrid.numberOfColums);
+      // this.mergeParticleInCell(newCell, newGrid, tempGrid);
+      // newGrid = tempGrid;
+      // newCell.numberOfParticles += cellInNewGrid.numberOfParticles + cellAlreadyThere.numberOfParticles;
     }
     // console.log(`NewCell.Particles = ${newCell.numberOfParticles}`);
-    newGrid.setContentAtPosition(x, y, newCell);
+    newGrid.setContentAtPosition(x, y, result);
   }
 
   getNewCellPosition(
