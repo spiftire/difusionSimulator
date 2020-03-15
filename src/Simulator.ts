@@ -42,7 +42,7 @@ export class Simulator {
 
   step() {
     let oldGrid = this.grid;
-    console.table(oldGrid.grid);
+    // console.table(oldGrid.grid);
     // create new array from old
     const newGrid = new Grid(oldGrid.numberOfRows, oldGrid.numberOfColums);
 
@@ -67,10 +67,6 @@ export class Simulator {
               numberOfParticles,
               direction
             );
-            // console.log("amount to split: " + splitAmount);
-
-            // if (direction != Direction.Stay) {
-            // console.log("if Not stay direction: " + direction);
 
             // put new cells into position
             let newPosition = this.getNewCellPosition(
@@ -80,10 +76,8 @@ export class Simulator {
 
             // if there is something at that position add it
             let newCell = this.splitCell(splitAmount, cell, newPosition);
-            console.log(newCell);
-
+            if(cell.numberOfParticles<=0) {cell = null};
             this.mergeParticleInCell(newCell, oldGrid, newGrid);
-            // }
           });
         }
       }
@@ -103,14 +97,15 @@ export class Simulator {
 
     const oldCell = oldGrid.getPositionContent(x, y);
     console.log("The Old cell" + oldCell);
+    // console.log("The Old cell" + cellAlreadyThere);
 
     if (oldCell != null && oldCell.numberOfParticles > 0) {
-      console.log(`NewCell.Particles = ${newCell.numberOfParticles}`);
+      // console.log(`NewCell.Particles = ${newCell.numberOfParticles}`);
       
       newCell.numberOfParticles += oldCell.numberOfParticles;
     } else {
     }
-    console.log(`NewCell.Particles = ${newCell.numberOfParticles}`);
+    // console.log(`NewCell.Particles = ${newCell.numberOfParticles}`);
     newGrid.setContentAtPosition(x, y, newCell);
   }
 
@@ -120,11 +115,10 @@ export class Simulator {
   ): GridPosition {
     const x = startPosition.x;
     const y = startPosition.y;
-    console.log("y: " + y);
-    console.log("x: " + x);
-    console.log(direction);
-    
-    
+    // console.log("y: " + y);
+    // console.log("x: " + x);
+    // console.log(direction);
+
     let newX: number = x,
       newY: number = y;
     switch (direction) {
@@ -141,7 +135,6 @@ export class Simulator {
         break;
 
       case Direction.Up:
-        console.log("up y: "+y);
         if (y > this.TOP_EDGE) {
           newY = y - 1;
         }
@@ -161,18 +154,15 @@ export class Simulator {
 
         break;
     }
-    console.log(`ǸewX: ${newX}, newY: ${newY}`);
-    
+    // console.log(`ǸewX: ${newX}, newY: ${newY}`);
+
     return new GridPosition(newX, newY);
   }
 
   calculateAmountToSplit(orgAmount: number, direction: Direction): number {
     let chance = 0;
     if (orgAmount > this.TRESHOLD_FOR_SPLIT) {
-      // console.log("direction: " + direction);
-
       chance = this.chances.get(direction);
-      // console.log("Split chance: " + chance);
     }
 
     return (orgAmount * chance) / this.totalChanse;
