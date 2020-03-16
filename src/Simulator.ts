@@ -3,7 +3,7 @@ import { GridPosition } from "./GridPosition";
 import { Grid } from "./Grid";
 
 export class Simulator {
-  readonly TRESHOLD_FOR_SPLIT:number = 10;
+  readonly TRESHOLD_FOR_SPLIT: number = 10;
   readonly RIGHT_EDGE: number;
   readonly LEFT_EDGE: number = 0;
   readonly TOP_EDGE: number = 0;
@@ -245,7 +245,7 @@ export class Simulator {
    * @param map map to get sorted
    */
   sortDecendChances(map: Map<Direction, number>): Map<Direction, number> {
-    return new Map([...map.entries()].sort((a, b) => b[1] - a[1])); // flop b[1] - a[1] to get sorted ascending
+    return new Map([...map.entries()].sort((a, b) => b[1] - a[1])); // flip b[1] - a[1] to get sorted ascending
   }
 }
 
