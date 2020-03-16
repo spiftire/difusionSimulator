@@ -1,6 +1,8 @@
 import { CellOfParticles } from "./CellOfParticles";
 
 export class Grid {
+
+  // todo make an iterator for this class
   numberOfRows: number; // y
   numberOfColums: number; // x
   grid: CellOfParticles[][];
