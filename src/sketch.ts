@@ -63,12 +63,30 @@ function drawCell() {
         // console.log(cell.numberOfParticles);
         // console.log(`i: ${i}, j: ${j}`);
         let particles = cell.numberOfParticles;
-        let alpha = map(particles, 0, START_NUMBER_OF_PARTICLES, 25, 255);
+        // const RED_MAX = 1850;
+        // const GREEN_MAX = 2550;
+        // const BLUE_MAX = 2550;
+        const ALPHA_MAX = 100;
+        // colorMode(RGB, RED_MAX, GREEN_MAX, BLUE_MAX, ALPHA_MAX);
+
+        // let red = map(particles, 1, START_NUMBER_OF_PARTICLES, 660, RED_MAX);
+        // let green = map(particles, 1, START_NUMBER_OF_PARTICLES, 650, GREEN_MAX);
+        // let blue = map(particles, 1, START_NUMBER_OF_PARTICLES, 930, BLUE_MAX);
+        let alpha = map(particles, 0, START_NUMBER_OF_PARTICLES, 15, ALPHA_MAX);
+        // let fillColor = color(red, green, blue, alpha);
         let fillColor = color(252, 3, 3);
-        if (START_NUMBER_OF_PARTICLES >= 100 && particles < START_NUMBER_OF_PARTICLES /10 && particles > START_NUMBER_OF_PARTICLES / 100) {
+        if (
+          START_NUMBER_OF_PARTICLES >= 100 &&
+          particles < START_NUMBER_OF_PARTICLES / 10 &&
+          particles > START_NUMBER_OF_PARTICLES / 100
+        ) {
           fillColor = color(66, 135, 245);
         }
-        if (START_NUMBER_OF_PARTICLES >= 1000 && particles <= START_NUMBER_OF_PARTICLES / 100 && particles > START_NUMBER_OF_PARTICLES/ 1000) {
+        if (
+          START_NUMBER_OF_PARTICLES >= 1000 &&
+          particles <= START_NUMBER_OF_PARTICLES / 100 &&
+          particles > START_NUMBER_OF_PARTICLES / 1000
+        ) {
           fillColor = color(66, 245, 93);
         }
         if (START_NUMBER_OF_PARTICLES >= 10000 && particles <= START_NUMBER_OF_PARTICLES / 5000) {
