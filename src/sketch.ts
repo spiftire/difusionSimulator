@@ -86,8 +86,8 @@ function drawCell() {
         let tan = 6*Math.atan(log/6-1/6);
         let logOfStartParticle = Math.log10(START_NUMBER_OF_PARTICLES);
         let hue = map(tan, 0, logOfStartParticle, 0, HUE_MAX);
-        let saturation = map(tan, 1, logOfStartParticle, SATURATION_LOWER, SATURATION_UPPER);
-        let brightness = map(tan, 1, logOfStartParticle, BRIGHTNESS_LOWER, BRIGHTNESS_UPPER);
+        let saturation = 70 //map(tan, 1, logOfStartParticle, SATURATION_LOWER, SATURATION_UPPER);
+        let brightness = 95 //map(tan, 1, logOfStartParticle, BRIGHTNESS_LOWER, BRIGHTNESS_UPPER);
         let alpha = map(tan, 0, logOfStartParticle, 60, ALPHA_MAX);
         // let fillColor = color(red, green, blue, alpha);
         // let fillColor = color(percent, saturation, brightness);
