@@ -66,6 +66,8 @@ export class Simulator {
         // counter++;
         // console.warn(counter);
 
+        // todo if cell.number == 1 do the chance thing
+        
         let cell = oldGrid.getPositionContent(x, y);
         if (cell != null && cell.numberOfParticles > 0) {
           const numberOfParticles = cell.numberOfParticles;
