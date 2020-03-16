@@ -74,13 +74,34 @@ export class Simulator {
 
         let cell = oldGrid.getPositionContent(x, y);
         if (cell != null && cell.numberOfParticles == 1) {
-          let rnd = random(this.totalChanse + 1);
-          for (let i = 0; i < this.chances.size; i++) {
-            if (rnd <= this.chances.get(i)) {
-              return this;
-            }
-            rnd -= this.chances[i];
-          }
+          console.log("Number of particles = 1");
+          
+          let rnd = Math.floor(random(this.totalChanse + 1)); // pluss 1 to make it inclusive
+          
+          console.log(`random value set to ${rnd}`);
+
+          let directions: number[] = new Array<number>();
+          this.REVERSE_SORTED_CHANCE.forEach((value, key) => {
+            
+              if (rnd <= value) {
+                // let val = this.REVERSE_SORTED_CHANCE.get(i);
+                // console.log("val is type " + typeof(val));
+                console.log(`value is ${value}`);
+                directions.push(key);
+                console.log(`key is ${key}`);
+                return;
+              }
+              rnd -= value;
+              console.log(`Lowering random to ${rnd}`);
+              
+          })
+
+          const direction = directions[0];
+          let newposition = this.getNewCellPosition(direction, cell.position);
+          cell.position = newposition;
+          this.mergeParticleInCell(cell, newGrid, newGrid);
+          // for (let i = 0; i < this.REVERSE_SORTED_CHANCE.size; i++) {
+          // }
           // console.error("should never get here");
           // console.log(rnd);
         }
