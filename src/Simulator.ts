@@ -10,6 +10,7 @@ export class Simulator {
   readonly BOTTOM_EDGE: number;
   readonly START_PARTICLE_AMOUNT: number;
   readonly START_POSITION: GridPosition;
+  readonly REVERSE_SORTED_CHANCE: Map<Direction, number>;
   totalChanse = 0;
   grid: Grid;
 
@@ -26,17 +27,22 @@ export class Simulator {
 
     this.grid = grid;
     console.table(this.grid);
-    
+
     this.RIGHT_EDGE = this.grid.numberOfColums - 1;
     // console.log(this.RIGHT_EDGE);
-    
+
     this.BOTTOM_EDGE = this.grid.numberOfRows - 1;
     this.START_POSITION = startPosition;
 
+    // console.log(`Chanses ${this.chances}`);
+    // console.table(this.chances);
+    // console.log(`Chanses sorted ${this.sortDecendChances(this.chances)}`);
+    this.REVERSE_SORTED_CHANCE = this.sortDecendChances(this.chances);
+  
     this.totalChanse = this.sumUpChances();
     let firstCell = new CellOfParticles(this.START_PARTICLE_AMOUNT, this.START_POSITION);
     // console.log(firstCell.position);
-    
+
     grid.setContentAtPosition(firstCell.position.x, firstCell.position.y, firstCell);
   }
 
@@ -65,9 +71,21 @@ export class Simulator {
         // console.warn(counter);
 
         // todo if cell.number == 1 do the chance thing
-        
+
         let cell = oldGrid.getPositionContent(x, y);
-        if (cell != null && cell.numberOfParticles > 0) {
+        if (cell != null && cell.numberOfParticles == 1) {
+          let rnd = random(this.totalChanse + 1);
+          for (let i = 0; i < this.chances.size; i++) {
+            if (rnd <= this.chances.get(i)) {
+              return this;
+            }
+            rnd -= this.chances[i];
+          }
+          // console.error("should never get here");
+          // console.log(rnd);
+        }
+
+        if (cell != null && cell.numberOfParticles > 1) {
           const numberOfParticles = cell.numberOfParticles;
           // console.log("number of particles: " + numberOfParticles);
 
@@ -193,12 +211,12 @@ export class Simulator {
   calculateAmountToSplit(orgAmount: number, direction: Direction): number {
     let chance = 0;
     // if (orgAmount > this.TRESHOLD_FOR_SPLIT) {
-      chance = this.chances.get(direction);
+    chance = this.chances.get(direction);
     // }
 
     const result = Math.ceil((orgAmount * chance) / this.totalChanse);
     // console.log(`Org amount: ${orgAmount}, result: ${result}`);
-    
+
     return result;
   }
 
@@ -228,6 +246,28 @@ export class Simulator {
       totalChance += chance;
     });
     return totalChance;
+  }
+
+  sortDecendChances(chances: Map<Direction, number>): Map<Direction, number> {
+    return new Map([...chances.entries()].sort((a, b) => b[1] - a[1]));
+    // let arr = new Array<number>();
+
+    // chances.forEach((key, value) => {
+    //   arr.push(key);
+    // });
+    // // console.log(arr);
+
+    // arr = arr.sort(function(a, b) {
+    //   if (a > b) {
+    //     return 1;
+    //   }
+    //   if (b > a) {
+    //     return -1;
+    //   }
+    //   return 0;
+    // });
+    // let rev = arr.reverse();
+    // return rev;
   }
 }
 
