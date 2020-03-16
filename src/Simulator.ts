@@ -197,9 +197,6 @@ export class Simulator {
 
         break;
     }
-
-    // if(edge && direction == Direction.Right) {console.log(`Edge to the direction ${direction} `);  }
-
     return new GridPosition(newX, newY);
   }
 
@@ -210,9 +207,7 @@ export class Simulator {
    */
   calculateAmountToSplit(orgAmount: number, direction: Direction): number {
     let chance = 0;
-    // if (orgAmount > this.TRESHOLD_FOR_SPLIT) {
     chance = this.chances.get(direction);
-    // }
 
     const result = Math.ceil((orgAmount * chance) / this.totalChanse);
     // console.log(`Org amount: ${orgAmount}, result: ${result}`);
@@ -227,9 +222,6 @@ export class Simulator {
    * @param positionOfNewCell the position of the new cell
    */
   splitCell(numberToSplitAway: number, cellToSplit: CellOfParticles, positionOfNewCell: GridPosition): CellOfParticles {
-    // if (numberToSplitAway <= this.TRESHOLD_FOR_SPLIT) {
-    //   return cellToSplit;
-    // }
     if (numberToSplitAway > cellToSplit.numberOfParticles) {
       numberToSplitAway = cellToSplit.numberOfParticles;
     }
@@ -248,26 +240,12 @@ export class Simulator {
     return totalChance;
   }
 
-  sortDecendChances(chances: Map<Direction, number>): Map<Direction, number> {
-    return new Map([...chances.entries()].sort((a, b) => b[1] - a[1]));
-    // let arr = new Array<number>();
-
-    // chances.forEach((key, value) => {
-    //   arr.push(key);
-    // });
-    // // console.log(arr);
-
-    // arr = arr.sort(function(a, b) {
-    //   if (a > b) {
-    //     return 1;
-    //   }
-    //   if (b > a) {
-    //     return -1;
-    //   }
-    //   return 0;
-    // });
-    // let rev = arr.reverse();
-    // return rev;
+  /**
+   * Sorts a Map of Directions and numbers by decending numbers
+   * @param map map to get sorted
+   */
+  sortDecendChances(map: Map<Direction, number>): Map<Direction, number> {
+    return new Map([...map.entries()].sort((a, b) => b[1] - a[1])); // flop b[1] - a[1] to get sorted ascending
   }
 }
 
