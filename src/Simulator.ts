@@ -3,12 +3,12 @@ import { GridPosition } from "./GridPosition";
 import { Grid } from "./Grid";
 
 export class Simulator {
-  readonly TRESHOLD_FOR_SPLIT = 10;
+  readonly TRESHOLD_FOR_SPLIT:number = 10;
   readonly RIGHT_EDGE: number;
   readonly LEFT_EDGE: number = 0;
   readonly TOP_EDGE: number = 0;
   readonly BOTTOM_EDGE: number;
-  readonly START_PARTICLE_AMOUNT;
+  readonly START_PARTICLE_AMOUNT: number;
   readonly START_POSITION: GridPosition;
   totalChanse = 0;
   grid: Grid;
@@ -27,17 +27,16 @@ export class Simulator {
     this.grid = grid;
     console.table(this.grid);
     
-    this.RIGHT_EDGE = this.grid.numberOfColums-1;
+    this.RIGHT_EDGE = this.grid.numberOfColums - 1;
     // console.log(this.RIGHT_EDGE);
     
-    this.BOTTOM_EDGE = this.grid.numberOfRows-1;
+    this.BOTTOM_EDGE = this.grid.numberOfRows - 1;
     this.START_POSITION = startPosition;
 
     this.totalChanse = this.sumUpChances();
     let firstCell = new CellOfParticles(this.START_PARTICLE_AMOUNT, this.START_POSITION);
     // console.log(firstCell.position);
     
-
     grid.setContentAtPosition(firstCell.position.x, firstCell.position.y, firstCell);
   }
 
@@ -48,7 +47,6 @@ export class Simulator {
   step() {
     let oldGrid = this.grid;
     // console.table(this.grid.grid);
-
 
     // create new array from old
     const newGrid = new Grid(oldGrid.numberOfRows, oldGrid.numberOfColums);
@@ -81,7 +79,6 @@ export class Simulator {
             //   splitAmount = cell.numberOfParticles;
             // }
             // console.log(`amount to split ${splitAmount} in direction ${direction}`);
-            
 
             // put new cells into position
             let newPosition = this.getNewCellPosition(<Direction>(<unknown>direction), cell.position);
@@ -97,10 +94,10 @@ export class Simulator {
         }
       }
     }
-    if(particleCounter != this.START_PARTICLE_AMOUNT) {
+    if (particleCounter != this.START_PARTICLE_AMOUNT) {
       console.error(`Total amount of particles ${particleCounter}`);
     }
-    
+
     this.grid = newGrid;
     // console.table(newGrid.grid);
     return newGrid;
@@ -147,28 +144,28 @@ export class Simulator {
     switch (direction) {
       case Direction.Right:
         if (x < this.RIGHT_EDGE) {
-          edge=false;
+          edge = false;
           newX = x + 1;
         }
         break;
 
       case Direction.Left:
         if (x > this.LEFT_EDGE) {
-          edge=false;
+          edge = false;
           newX = x - 1;
         }
         break;
 
       case Direction.Up:
         if (y > this.TOP_EDGE) {
-          edge=false;
+          edge = false;
           newY = y - 1;
         }
         break;
 
       case Direction.Down:
         if (y < this.BOTTOM_EDGE) {
-          edge=false;
+          edge = false;
           newY = y + 1;
         }
         break;
