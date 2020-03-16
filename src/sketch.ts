@@ -9,10 +9,10 @@ let resolution = 20;
 let cols: number;
 let rows: number;
 let grid: Grid;
-const NUMBER_OF_COLUMS = 20;
-const NUMBER_OF_ROWS = 20;
-const START_POSITION = new GridPosition(Math.floor(NUMBER_OF_COLUMS-1/2), 0);
-const START_NUMBER_OF_PARTICLES = 10000;
+const NUMBER_OF_COLUMS = 80;
+const NUMBER_OF_ROWS = 40;
+const START_POSITION = new GridPosition(Math.floor((NUMBER_OF_COLUMS - 1) / 2), 0);
+const START_NUMBER_OF_PARTICLES = 100000;
 const STEPS_TO_SIMULATE = 50;
 let simulator;
 let stepsSimulated = 1;
@@ -63,17 +63,45 @@ function drawCell() {
         // console.log(cell.numberOfParticles);
         // console.log(`i: ${i}, j: ${j}`);
         let particles = cell.numberOfParticles;
-        let alpha = map(particles, 0, START_NUMBER_OF_PARTICLES, 25, 255);
-        let fillColor = color(252, 3, 3);
-        if (START_NUMBER_OF_PARTICLES >= 100 && particles < START_NUMBER_OF_PARTICLES /10 && particles > START_NUMBER_OF_PARTICLES / 100) {
-          fillColor = color(66, 135, 245);
-        }
-        if (START_NUMBER_OF_PARTICLES >= 1000 && particles <= START_NUMBER_OF_PARTICLES / 100 && particles > START_NUMBER_OF_PARTICLES/ 1000) {
-          fillColor = color(66, 245, 93);
-        }
-        if (START_NUMBER_OF_PARTICLES >= 10000 && particles <= START_NUMBER_OF_PARTICLES / 5000) {
-          fillColor = color(180, 65, 242);
-        }
+        // const RED_MAX = 1850;
+        // const GREEN_MAX = 2550;
+        // const BLUE_MAX = 2550;
+        const HUE_MAX = 365;
+        const SATURATION_MAX = 100;
+        const BRIGHTNESS_MAX = 100;
+        const ALPHA_MAX = 100;
+        // colorMode(RGB, RED_MAX, GREEN_MAX, BLUE_MAX, ALPHA_MAX);
+        colorMode(HSB, HUE_MAX, SATURATION_MAX, BRIGHTNESS_MAX, ALPHA_MAX);
+
+        // let red = map(particles, 1, START_NUMBER_OF_PARTICLES, 660, RED_MAX);
+        // let green = map(particles, 1, START_NUMBER_OF_PARTICLES, 650, GREEN_MAX);
+        // let blue = map(particles, 1, START_NUMBER_OF_PARTICLES, 930, BLUE_MAX);
+        let percent = map(particles, 0, START_NUMBER_OF_PARTICLES, 0, 1000);
+        let hue = map(particles*Math.log(START_NUMBER_OF_PARTICLES), 1, START_NUMBER_OF_PARTICLES, HUE_MAX, 0);
+        let saturation = map(particles, 1, START_NUMBER_OF_PARTICLES, 90, SATURATION_MAX);
+        let brightness = map(particles, 1, START_NUMBER_OF_PARTICLES, 70, BRIGHTNESS_MAX);
+        let alpha = map(particles, 0, START_NUMBER_OF_PARTICLES, 25, ALPHA_MAX);
+        // let fillColor = color(red, green, blue, alpha);
+        // let fillColor = color(percent, saturation, brightness);
+        let fillColor = color(hue, saturation, brightness);
+        // let fillColor = color(252, 3, 3);
+        // if (
+        //   START_NUMBER_OF_PARTICLES >= 100 &&
+        //   particles < START_NUMBER_OF_PARTICLES / 10 &&
+        //   particles > START_NUMBER_OF_PARTICLES / 100
+        // ) {
+        //   fillColor = color(66, 135, 245);
+        // }
+        // if (
+        //   START_NUMBER_OF_PARTICLES >= 1000 &&
+        //   particles <= START_NUMBER_OF_PARTICLES / 100 &&
+        //   particles > START_NUMBER_OF_PARTICLES / 1000
+        // ) {
+        //   fillColor = color(66, 245, 93);
+        // }
+        // if (START_NUMBER_OF_PARTICLES >= 10000 && particles <= START_NUMBER_OF_PARTICLES / 5000) {
+        //   fillColor = color(180, 65, 242);
+        // }
 
         fillColor.setAlpha(alpha);
         fill(fillColor);
