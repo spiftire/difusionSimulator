@@ -99,8 +99,8 @@ export class Simulator {
           const direction = directions[0];
           let newposition = this.getNewCellPosition(direction, cell.position);
           cell.position = newposition;
-          this.mergeParticleInCell(cell, newGrid, newGrid);
-          // for (let i = 0; i < this.REVERSE_SORTED_CHANCE.size; i++) {
+          console.log(`new position after set = ${cell.position.x}, ${cell.position.y}`);
+          this.mergeParticleInCell(cell, newGrid);
           // }
           // console.error("should never get here");
           // console.log(rnd);
@@ -128,7 +128,7 @@ export class Simulator {
             particleCounter += newCell.numberOfParticles;
 
             // if there is something at that position add it
-            this.mergeParticleInCell(newCell, oldGrid, newGrid);
+            this.mergeParticleInCell(newCell, newGrid);
           });
         }
       }
@@ -152,7 +152,7 @@ export class Simulator {
    * @param previusGrid The old grid from last itteration (t-1)
    * @param newGrid The new grid from this itteration (t)
    */
-  mergeParticleInCell(newCell: CellOfParticles, previusGrid: Grid, newGrid: Grid) {
+  mergeParticleInCell(newCell: CellOfParticles, newGrid: Grid) {
     const x: number = newCell.position.x;
     const y: number = newCell.position.y;
     let result: CellOfParticles = newCell;
