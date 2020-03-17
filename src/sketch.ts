@@ -53,6 +53,16 @@ function simulateOneStep() {
 }
 
 function drawCell() {
+  const HUE_MAX = 20;
+  const SATURATION_MAX = 100;
+  const SATURATION_UPPER = 70;
+  const SATURATION_LOWER = 30;
+  const BRIGHTNESS_MAX = 100;
+  const BRIGHTNESS_UPPER = 100;
+  const BRIGHTNESS_LOWER = 90;
+  const ALPHA_MAX = 100;
+  const LOG_OF_START_PARTICLES = Math.log10(START_NUMBER_OF_PARTICLES);
+
   for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
       let xCord = i * resolution + resolution / 2;
@@ -63,54 +73,15 @@ function drawCell() {
         // console.log(cell.numberOfParticles);
         // console.log(`i: ${i}, j: ${j}`);
         let particles = cell.numberOfParticles;
-        // const RED_MAX = 1850;
-        // const GREEN_MAX = 2550;
-        // const BLUE_MAX = 2550;
-        const HUE_MAX = 20;
-        const SATURATION_MAX = 100;
-        const SATURATION_UPPER = 70;
-        const SATURATION_LOWER = 30;
-        const BRIGHTNESS_MAX = 100;
-        const BRIGHTNESS_UPPER = 100;
-        const BRIGHTNESS_LOWER = 90;
-        const ALPHA_MAX = 100;
-        // colorMode(RGB, RED_MAX, GREEN_MAX, BLUE_MAX, ALPHA_MAX);
         colorMode(HSB, HUE_MAX, SATURATION_MAX, BRIGHTNESS_MAX, ALPHA_MAX);
 
-        // let red = map(particles, 1, START_NUMBER_OF_PARTICLES, 660, RED_MAX);
-        // let green = map(particles, 1, START_NUMBER_OF_PARTICLES, 650, GREEN_MAX);
-        // let blue = map(particles, 1, START_NUMBER_OF_PARTICLES, 930, BLUE_MAX);
-        let percent = map(particles, 0, START_NUMBER_OF_PARTICLES, 0, 1000);
-        // let hue = map(2*Math.atan((particles)), 0, (START_NUMBER_OF_PARTICLES), 0, HUE_MAX);
         let log = Math.log10(particles);
-        let tan = 6*Math.atan(log/6-1/6);
-        let logOfStartParticle = Math.log10(START_NUMBER_OF_PARTICLES);
-        let hue = map(tan, 0, logOfStartParticle, 0, HUE_MAX);
-        let saturation = 70 //map(tan, 1, logOfStartParticle, SATURATION_LOWER, SATURATION_UPPER);
-        let brightness = 95 //map(tan, 1, logOfStartParticle, BRIGHTNESS_LOWER, BRIGHTNESS_UPPER);
-        let alpha = map(tan, 0, logOfStartParticle, 60, ALPHA_MAX);
-        // let fillColor = color(red, green, blue, alpha);
-        // let fillColor = color(percent, saturation, brightness);
+        let tan = 6 * Math.atan(log / 6 - 1 / 6);
+        let hue = map(tan, 0, LOG_OF_START_PARTICLES, 0, HUE_MAX);
+        let saturation = 70; //map(tan, 1, logOfStartParticle, SATURATION_LOWER, SATURATION_UPPER);
+        let brightness = 95; //map(tan, 1, logOfStartParticle, BRIGHTNESS_LOWER, BRIGHTNESS_UPPER);
+        let alpha = map(tan, 0, LOG_OF_START_PARTICLES, 60, ALPHA_MAX);
         let fillColor = color(hue, saturation, brightness);
-        // let fillColor = color(252, 3, 3);
-        // if (
-        //   START_NUMBER_OF_PARTICLES >= 100 &&
-        //   particles < START_NUMBER_OF_PARTICLES / 10 &&
-        //   particles > START_NUMBER_OF_PARTICLES / 100
-        // ) {
-        //   fillColor = color(66, 135, 245);
-        // }
-        // if (
-        //   START_NUMBER_OF_PARTICLES >= 1000 &&
-        //   particles <= START_NUMBER_OF_PARTICLES / 100 &&
-        //   particles > START_NUMBER_OF_PARTICLES / 1000
-        // ) {
-        //   fillColor = color(66, 245, 93);
-        // }
-        // if (START_NUMBER_OF_PARTICLES >= 10000 && particles <= START_NUMBER_OF_PARTICLES / 5000) {
-        //   fillColor = color(180, 65, 242);
-        // }
-
         fillColor.setAlpha(alpha);
         fill(fillColor);
         noStroke();
