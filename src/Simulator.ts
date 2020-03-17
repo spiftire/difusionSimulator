@@ -18,11 +18,11 @@ export class Simulator {
 
   constructor(grid: Grid, startParticleAmount: number, startPosition: GridPosition) {
     this.chances = new Map();
-    this.chances.set(Direction.Left, 20);
-    this.chances.set(Direction.Right, 20);
-    this.chances.set(Direction.Down, 30);
-    this.chances.set(Direction.Up, 5);
-    this.chances.set(Direction.Stay, 25);
+    this.chances.set(Direction.Left, 15);
+    this.chances.set(Direction.Right, 15);
+    this.chances.set(Direction.Down, 20);
+    this.chances.set(Direction.Up, 15);
+    this.chances.set(Direction.Stay, 0);
     this.START_PARTICLE_AMOUNT = startParticleAmount;
 
     this.grid = grid;
@@ -38,7 +38,7 @@ export class Simulator {
     // console.table(this.chances);
     // console.log(`Chanses sorted ${this.sortDecendChances(this.chances)}`);
     this.REVERSE_SORTED_CHANCE = this.sortDecendChances(this.chances);
-  
+
     this.totalChanse = this.sumUpChances();
     let firstCell = new CellOfParticles(this.START_PARTICLE_AMOUNT, this.START_POSITION);
     // console.log(firstCell.position);
@@ -74,39 +74,53 @@ export class Simulator {
 
         let cell = oldGrid.getPositionContent(x, y);
         if (cell != null && cell.numberOfParticles == 1) {
-          console.log("Number of particles = 1");
-          
+          // console.log("Number of particles = 1");
+
           let rnd = Math.floor(random(this.totalChanse + 1)); // pluss 1 to make it inclusive
-          
-          console.log(`random value set to ${rnd}`);
+          // console.log(`random value set to ${rnd}`);
 
-          let directions: number[] = new Array<number>();
-          this.REVERSE_SORTED_CHANCE.forEach((value, key) => {
-            
-              if (rnd <= value) {
-                // let val = this.REVERSE_SORTED_CHANCE.get(i);
-                // console.log("val is type " + typeof(val));
-                console.log(`value is ${value}`);
-                directions.push(key);
-                console.log(`key is ${key}`);
-                return;
-              }
-              rnd -= value;
-              console.log(`Lowering random to ${rnd}`);
-              
-          })
+          let direction: number;
+          let it = this.REVERSE_SORTED_CHANCE.entries();
+          let result = it.next();
+          let found = false;
+          while (!result.done && !found) {
+            // console.log(result);
 
-          const direction = directions[0];
+            // console.log(`found: ${found} result.done: ${result.done}`);
+            // console.log(`The chance to match = ${result.value[1]}`);
+
+            // console.log(`Is rnd: ${rnd} <= result.value[1]: ${result.value[1]} => ${rnd <= result.value[1]}`);
+
+            if (rnd <= result.value[1]) {
+              // console.log("val is type " + typeof(val));
+              // console.log(`value is ${result.value}`);
+              direction = result.value[0]; // value is an array from enteries [0] index of key => ENUM Direction
+              // console.log(`direction: ${direction}`);
+
+              found = true;
+              // console.log("found => done");
+            } else {
+              rnd -= result.value[1]; // value is an array from enteries [1] index of value => chance
+              // console.log(`Lowering random to ${rnd}`);
+              // console.log(result.value);
+              result = it.next();
+            }
+          }
+
           let newposition = this.getNewCellPosition(direction, cell.position);
+          // console.log(`old position = ${cell.position.x}, ${cell.position.y}`);
+          // console.log(`new position = ${newposition.x}, ${newposition.y}`);
+          
+          
           cell.position = newposition;
-          console.log(`new position after set = ${cell.position.x}, ${cell.position.y}`);
-          this.mergeParticleInCell(cell, newGrid);
-          // }
-          // console.error("should never get here");
-          // console.log(rnd);
-        }
+          // console.log(`new position after set = ${cell.position.x}, ${cell.position.y}`);
+          // console.table(oldGrid.grid);
+          // console.table(newGrid.grid);
+          
+          particleCounter += cell.numberOfParticles;
 
-        if (cell != null && cell.numberOfParticles > 1) {
+          this.mergeParticleInCell(cell, newGrid);
+        } else if (cell != null && cell.numberOfParticles > 1) {
           const numberOfParticles = cell.numberOfParticles;
           // console.log("number of particles: " + numberOfParticles);
 
@@ -138,7 +152,9 @@ export class Simulator {
     }
 
     this.grid = newGrid;
+    
     // console.table(newGrid.grid);
+    // console.log(`%c END OF STEP` , "background: #666; color: #bada55");
     return newGrid;
   }
 
