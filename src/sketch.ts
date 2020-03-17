@@ -9,12 +9,15 @@ let resolution = 20;
 let cols: number;
 let rows: number;
 let grid: Grid;
-const NUMBER_OF_COLUMS = 80;
-const NUMBER_OF_ROWS = 40;
-const START_POSITION = new GridPosition(Math.floor((NUMBER_OF_COLUMS - 1) / 2), 0);
-const START_NUMBER_OF_PARTICLES = 1000000;
+const NUMBER_OF_COLUMS = 10;
+const NUMBER_OF_ROWS = 10;
+const START_X = window.innerWidth/(resolution*2)//Math.floor((NUMBER_OF_COLUMS - 1) / 2);
+const START_Y = 0;//Math.floor((NUMBER_OF_ROWS - 1) / 2);
+const BACKGROUND_ALPHA = 50;
+const START_POSITION = new GridPosition(START_X, START_Y);
+const START_NUMBER_OF_PARTICLES = 100000;
 const STEPS_TO_SIMULATE = 50;
-let simulator;
+let simulator: Simulator;
 let stepsSimulated = 1;
 
 function map(value: number, fromLow: number, fromHigh: number, toLow: number, toHigh: number): number {
@@ -22,9 +25,11 @@ function map(value: number, fromLow: number, fromHigh: number, toLow: number, to
 }
 
 function setup() {
-  createCanvas(NUMBER_OF_COLUMS * resolution, NUMBER_OF_ROWS * resolution);
+  // createCanvas(NUMBER_OF_COLUMS * resolution, NUMBER_OF_ROWS * resolution);
+  createCanvas(window.innerWidth, window.innerHeight);
   background(255);
   noStroke();
+  frameRate(10);
 
   cols = Math.floor(width / resolution);
   rows = Math.floor(height / resolution);
@@ -38,16 +43,16 @@ function setup() {
 }
 
 function draw() {
+  let backgroundColor = color(255);
+  backgroundColor.setAlpha(BACKGROUND_ALPHA);
+  background(backgroundColor);
   simulateOneStep();
 }
 
 function simulateOneStep() {
   stepsSimulated++;
-  // console.log(`%c Step number: ${stepsSimulated}`, "background: #222; color: #bada55");
+  console.log(`%c Step number: ${stepsSimulated}`, "background: #222; color: #bada55");
 
-  let backgroundColor = color(255);
-  backgroundColor.setAlpha(50);
-  background(backgroundColor);
   grid = simulator.step();
   drawCell();
 }
@@ -75,17 +80,20 @@ function drawCell() {
         let particles = cell.numberOfParticles;
         colorMode(HSB, HUE_MAX, SATURATION_MAX, BRIGHTNESS_MAX, ALPHA_MAX);
 
-        let log = Math.log10(particles);
-        let tan = 6 * Math.atan(log / 6 - 1 / 6);
-        let hue = map(tan, 0, LOG_OF_START_PARTICLES, 0, HUE_MAX);
+        let particlesLog10 = Math.log10(particles);
+        let particlesTan = 6 * Math.atan(particlesLog10 / 6 - 1 / 6);
+        let hue = map(particlesTan, 0, LOG_OF_START_PARTICLES, 0, HUE_MAX);
+        if (particles == 2) {
+          hue = 0;
+        }
         let saturation = 70; //map(tan, 1, logOfStartParticle, SATURATION_LOWER, SATURATION_UPPER);
         let brightness = 95; //map(tan, 1, logOfStartParticle, BRIGHTNESS_LOWER, BRIGHTNESS_UPPER);
-        let alpha = map(tan, 0, LOG_OF_START_PARTICLES, 60, ALPHA_MAX);
+        let alpha = 80; //map(tan, 0, LOG_OF_START_PARTICLES, 60, ALPHA_MAX);
         let fillColor = color(hue, saturation, brightness);
         fillColor.setAlpha(alpha);
         fill(fillColor);
         noStroke();
-        circle(xCord, yCord, resolution * 2);
+        circle(xCord, yCord, particlesLog10*resolution * 2);
       }
     }
   }
