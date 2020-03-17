@@ -6,8 +6,9 @@
     "suppressImplicitAnyIndexErrors": true,
     "module": "es6",
     "moduleResolution": "node",
-    "target": "es5",
+    "target": "ES6",
     "jsx": "react",
-    "allowJs": true
+    "allowJs": true,
+    "downlevelIteration": true
   }
 }
