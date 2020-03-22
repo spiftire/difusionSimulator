@@ -18,10 +18,10 @@ export class Simulator {
 
   constructor(grid: Grid, startParticleAmount: number, startPosition: GridPosition) {
     this.chances = new Map();
-    this.chances.set(Direction.Left, 15);
-    this.chances.set(Direction.Right, 15);
-    this.chances.set(Direction.Down, 20);
-    this.chances.set(Direction.Up, 15);
+    this.chances.set(Direction.Left, 10);
+    this.chances.set(Direction.Right, 10);
+    this.chances.set(Direction.Down, 10);
+    this.chances.set(Direction.Up, 10);
     this.chances.set(Direction.Stay, 0);
     this.START_PARTICLE_AMOUNT = startParticleAmount;
 
