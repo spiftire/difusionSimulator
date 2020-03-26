@@ -66,7 +66,8 @@ function simulateOneStep() {
 }
 
 function drawCell() {
-  const HUE_MAX = 20;
+  push();
+  const HUE_MAX = 360;
   const SATURATION_MAX = 100;
   const SATURATION_UPPER = 70;
   const SATURATION_LOWER = 30;
@@ -90,6 +91,7 @@ function drawCell() {
 
         let particlesLog10 = Math.log10(particles);
         let particlesTan = 6 * Math.atan(particlesLog10 / 6 - 1 / 6);
+        // let hue = map(particlesTan, 0, LOG_OF_START_PARTICLES, 0, HUE_MAX);
         let hue = map(particlesTan, 0, LOG_OF_START_PARTICLES, 0, HUE_MAX);
         if (particles == 2) {
           hue = 0;
@@ -97,14 +99,30 @@ function drawCell() {
         let saturation = 70; //map(tan, 1, logOfStartParticle, SATURATION_LOWER, SATURATION_UPPER);
         let brightness = 95; //map(tan, 1, logOfStartParticle, BRIGHTNESS_LOWER, BRIGHTNESS_UPPER);
         let alpha = 80; //map(tan, 0, LOG_OF_START_PARTICLES, 60, ALPHA_MAX);
-        let fillColor = color(hue, saturation, brightness);
+        // let fillColor = color(hue, saturation, brightness);
+        let from = color(0, saturation, brightness);
+        // console.log("from");
+        // console.log(from);
+        
+        
+        let to = color(HUE_MAX-HUE_MAX*.1, saturation, brightness);
+        // console.log("to");
+        // console.log(to);
+        let fractionOfParticles = (particles/START_NUMBER_OF_PARTICLES);
+        // console.log("fractionOfParticles: "+fractionOfParticles);
+        
+        let fillColor = lerpColor(from, to, fractionOfParticles);
+        // console.log("fillColor");
+        // console.log(fillColor);
+        
         fillColor.setAlpha(alpha);
         fill(fillColor);
         noStroke();
-        circle(xCord, yCord, particlesLog10*resolution * 2);
+        circle(xCord, yCord, particlesLog10*resolution * 2 + resolution);
       }
     }
   }
+  pop();
 }
 
 function keyPressed() {
