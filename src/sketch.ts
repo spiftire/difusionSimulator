@@ -1,11 +1,18 @@
 /// <reference path="../node_modules/@types/p5/global.d.ts" />
 
-import { Simulator } from "./Simulator";
+import { Simulator, Direction } from "./Simulator";
 import { Grid } from "./Grid";
 import { GridPosition } from "./GridPosition";
 
 require("p5");
-let resolution = 5;
+let chances = new Map<Direction, number>();
+    chances.set(Direction.Left, 20);
+    chances.set(Direction.Right, 20);
+    chances.set(Direction.Down, 30);
+    chances.set(Direction.Up, 5);
+    chances.set(Direction.Stay, 25);
+
+let resolution = 50;
 let cols: number;
 let rows: number;
 let grid: Grid;
@@ -34,7 +41,8 @@ function setup() {
   cols = Math.floor(width / resolution);
   rows = Math.floor(height / resolution);
   grid = new Grid(rows, cols);
-  simulator = new Simulator(grid, START_NUMBER_OF_PARTICLES, START_POSITION);
+  simulator = new Simulator(grid, START_NUMBER_OF_PARTICLES, START_POSITION, chances);
+  drawCell();
   // for (let i = 0; i < STEPS_TO_SIMULATE; i++) {
   //   setTimeout(() => {
   //     simulateOneStep();

@@ -16,13 +16,8 @@ export class Simulator {
 
   chances: Map<Direction, number>;
 
-  constructor(grid: Grid, startParticleAmount: number, startPosition: GridPosition) {
-    this.chances = new Map();
-    this.chances.set(Direction.Left, 10);
-    this.chances.set(Direction.Right, 10);
-    this.chances.set(Direction.Down, 10);
-    this.chances.set(Direction.Up, 10);
-    this.chances.set(Direction.Stay, 0);
+  constructor(grid: Grid, startParticleAmount: number, startPosition: GridPosition, chances: Map<Direction, number>) {
+    this.chances = chances;
     this.START_PARTICLE_AMOUNT = startParticleAmount;
 
     this.grid = grid;
@@ -286,7 +281,7 @@ export class Simulator {
   }
 }
 
-enum Direction {
+export enum Direction {
   Up,
   Down,
   Left,
