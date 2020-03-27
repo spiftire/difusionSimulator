@@ -12,14 +12,15 @@ chances.set(Direction.Down, 30);
 chances.set(Direction.Up, 5);
 chances.set(Direction.Stay, 25);
 
-const population: number[] = [1, 2, 3 ,5 ,8, 10, 50, 100, 1000, 10000];
+const population: number[] = [1, 2, 3, 5, 8, 10, 50, 100, 1000, 10000];
 
 let populationCounter = 0;
 let resolution = 50;
 let cols: number;
 let rows: number;
 let grid: Grid;
-const SAVE_CANVAS:boolean = true;
+const SAVE_CANVAS: boolean = false;
+const FULL_SIMULATION: boolean = false;
 const NUMBER_OF_COLUMS = 10;
 const NUMBER_OF_ROWS = 10;
 const START_X = Math.floor(window.innerWidth / (resolution * 2)); //Math.floor((NUMBER_OF_COLUMS - 1) / 2);
@@ -55,14 +56,16 @@ function setup() {
 }
 
 function draw() {
-  simulateOneStep();
-  if (frameCount >= STEPS_TO_SIMULATE && populationCounter < population.length) {
-    reset()
-    // noLoop();
-  } 
-  if( populationCounter >= population.length){
-    noLoop();
-    console.log("noloop");
+  if (FULL_SIMULATION) {
+    simulateOneStep();
+    if (frameCount >= STEPS_TO_SIMULATE && populationCounter < population.length) {
+      reset();
+      // noLoop();
+    }
+    if (populationCounter >= population.length) {
+      noLoop();
+      console.log("noloop");
+    }
   }
 }
 console.log("done drawing");
@@ -99,7 +102,7 @@ function drawCell() {
       line(i * resolution, 0, i * resolution, height);
       line(width, j * resolution, 0, j * resolution);
 
-      if (cell != null && cell.numberOfParticles>0) {
+      if (cell != null && cell.numberOfParticles > 0) {
         // console.log(cell.numberOfParticles);
         // console.log(`i: ${i}, j: ${j}`);
         let particles = cell.numberOfParticles;
@@ -140,7 +143,7 @@ function drawCell() {
   }
   pop();
 
-  if(SAVE_CANVAS) {
+  if (SAVE_CANVAS) {
     saveSimulationStepToImage();
   }
 }
@@ -156,7 +159,7 @@ function reset() {
   START_NUMBER_OF_PARTICLES = population[populationCounter];
   console.log(`Start number of particles = ${START_NUMBER_OF_PARTICLES}`);
   setup();
-  
+
   // stepsSimulated = 0;
 }
 
@@ -164,6 +167,10 @@ function keyPressed() {
   if (keyCode == 78) {
     simulateOneStep();
     console.table(grid.getGridOfParticles());
+  }
+  if (keyCode == 83) {
+    console.log("%c Stopping simulation", "background: red; color: white");
+    noLoop();
   }
 }
 
