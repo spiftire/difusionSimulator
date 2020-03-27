@@ -164,11 +164,11 @@ function reset() {
 }
 
 function keyPressed() {
-  if (keyCode == 78) {
+  if (keyCode == 78) { // N pressed
     simulateOneStep();
     console.table(grid.getGridOfParticles());
   }
-  if (keyCode == 83) {
+  if (keyCode == 83) { // S pressed
     console.log("%c Stopping simulation", "background: red; color: white");
     noLoop();
   }
