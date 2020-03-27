@@ -85,7 +85,7 @@ function drawCell() {
       let yCord = j * resolution + resolution / 2;
       let cell = grid.getPositionContent(i, j);
 
-      if (cell != null) {
+      if (cell != null && cell.numberOfParticles>0) {
         // console.log(cell.numberOfParticles);
         // console.log(`i: ${i}, j: ${j}`);
         let particles = cell.numberOfParticles;
