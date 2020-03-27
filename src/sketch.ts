@@ -65,6 +65,8 @@ function simulateOneStep() {
 
   grid = simulator.step();
   drawCell();
+  let filename: string = `Population-${START_NUMBER_OF_PARTICLES}-stepno-${stepsSimulated}`;
+  saveCanvas(filename, "png");
 }
 
 function drawCell() {
