@@ -54,22 +54,20 @@ export class Grid {
     return this.grid[y][x];
   }
 
-  getGridOfParticles() {
+  getGridOfParticles(): number[][] {
     return this.calculateParticles();
   }
 
-  calculateParticles() {
+  calculateParticles(): number[][] {
     let result = this.createEmpty2dgrid(this.numberOfColums, this.numberOfRows);
     for (let x = 0; x < this.numberOfColums; x++) {
       for (let y = 0; y < this.numberOfRows; y++) {
-        const cell = this.getPositionContent(x,y);
+        const cell = this.getPositionContent(x, y);
         if (cell) {
           result[y][x] = cell.numberOfParticles;
         }
       }
     }
-    // console.table(result);
-    
     return result;
   }
 }
