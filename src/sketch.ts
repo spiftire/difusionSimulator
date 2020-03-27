@@ -141,9 +141,13 @@ function drawCell() {
   pop();
 
   if(SAVE_CANVAS) {
-    let filename: string = `Population-${START_NUMBER_OF_PARTICLES}-stepno-${stepsSimulated}`;
-  saveCanvas(filename, "png");
+    saveSimulationStepToImage();
   }
+}
+
+function saveSimulationStepToImage() {
+  let filename: string = `Population-${START_NUMBER_OF_PARTICLES}-stepno-${stepsSimulated}`;
+  saveCanvas(filename, "png");
 }
 
 function reset() {
