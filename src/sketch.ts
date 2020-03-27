@@ -128,6 +128,7 @@ function drawCell() {
 function keyPressed() {
   if (keyCode == 78) {
     simulateOneStep();
+    console.table(grid.getGridOfParticles());
   }
 }
 
