@@ -6,25 +6,27 @@ import { GridPosition } from "./GridPosition";
 
 require("p5");
 let chances = new Map<Direction, number>();
-    chances.set(Direction.Left, 20);
-    chances.set(Direction.Right, 20);
-    chances.set(Direction.Down, 30);
-    chances.set(Direction.Up, 5);
-    chances.set(Direction.Stay, 25);
+chances.set(Direction.Left, 20);
+chances.set(Direction.Right, 20);
+chances.set(Direction.Down, 30);
+chances.set(Direction.Up, 5);
+chances.set(Direction.Stay, 25);
 
 const population: number[] = [1, 2, 3 ,5 ,8, 10, 50, 100, 1000, 10000];
 
+let populationCounter = 0;
 let resolution = 50;
 let cols: number;
 let rows: number;
 let grid: Grid;
+const SAVE_CANVAS:boolean = true;
 const NUMBER_OF_COLUMS = 10;
 const NUMBER_OF_ROWS = 10;
-const START_X = Math.floor(window.innerWidth/(resolution*2));//Math.floor((NUMBER_OF_COLUMS - 1) / 2);
-const START_Y = Math.floor(window.innerHeight/(resolution*2));//0;//Math.floor((NUMBER_OF_ROWS - 1) / 2);
+const START_X = Math.floor(window.innerWidth / (resolution * 2)); //Math.floor((NUMBER_OF_COLUMS - 1) / 2);
+const START_Y = Math.floor(window.innerHeight / (resolution * 2)); //0;//Math.floor((NUMBER_OF_ROWS - 1) / 2);
 const BACKGROUND_ALPHA = 50;
 const START_POSITION = new GridPosition(START_X, START_Y);
-const START_NUMBER_OF_PARTICLES = population[10];
+let START_NUMBER_OF_PARTICLES = population[populationCounter];
 const STEPS_TO_SIMULATE = 5;
 let simulator: Simulator;
 let stepsSimulated = 1;
@@ -46,36 +48,34 @@ function setup() {
   simulator = new Simulator(grid, START_NUMBER_OF_PARTICLES, START_POSITION, chances);
   drawCell();
   // for (let i = 0; i < STEPS_TO_SIMULATE; i++) {
-  //   setTimeout(() => {
-  //     simulateOneStep();
-  //   }, 1000);
+  //   //   setTimeout(() => {
+  //   simulateOneStep();
+  //   //   }, 1000);
   // }
 }
 
 function draw() {
-  let backgroundColor = color(255);
-  backgroundColor.setAlpha(BACKGROUND_ALPHA);
-  background(backgroundColor);
   simulateOneStep();
-  if (frameCount >= STEPS_TO_SIMULATE) {
+  if (frameCount >= STEPS_TO_SIMULATE && populationCounter < population.length) {
+    reset()
+    // noLoop();
+  } 
+  if( populationCounter >= population.length){
     noLoop();
     console.log("noloop");
+  }
 }
-}
-console.log("done loop");
+console.log("done drawing");
 
 function simulateOneStep() {
   console.log(`%c Step number: ${stepsSimulated}`, "background: #222; color: #bada55");
   stepsSimulated++;
-  console.log(`%c Step number: ${stepsSimulated}`, "background: #222; color: #bada55");
 
   grid = simulator.step();
   let bg = color(255);
   // bg.setAlpha(100);
   background(bg);
   drawCell();
-  let filename: string = `Population-${START_NUMBER_OF_PARTICLES}-stepno-${stepsSimulated}`;
-  saveCanvas(filename, "png");
 }
 
 function drawCell() {
@@ -129,7 +129,7 @@ function drawCell() {
         let fillColor = lerpColor(from, to, fractionOfParticles);
         // console.log("fillColor");
         // console.log(fillColor);
-        
+
         fillColor.setAlpha(alpha);
         fill(fillColor);
         noStroke();
@@ -139,6 +139,21 @@ function drawCell() {
     }
   }
   pop();
+
+  if(SAVE_CANVAS) {
+    let filename: string = `Population-${START_NUMBER_OF_PARTICLES}-stepno-${stepsSimulated}`;
+  saveCanvas(filename, "png");
+  }
+}
+
+function reset() {
+  frameCount = 0;
+  populationCounter++;
+  START_NUMBER_OF_PARTICLES = population[populationCounter];
+  console.log(`Start number of particles = ${START_NUMBER_OF_PARTICLES}`);
+  setup();
+  
+  // stepsSimulated = 0;
 }
 
 function keyPressed() {
