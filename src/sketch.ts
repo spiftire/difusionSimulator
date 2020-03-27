@@ -12,6 +12,8 @@ let chances = new Map<Direction, number>();
     chances.set(Direction.Up, 5);
     chances.set(Direction.Stay, 25);
 
+const population: number[] = [1, 2, 3 ,5 ,8, 10, 50, 100, 1000, 10000];
+
 let resolution = 50;
 let cols: number;
 let rows: number;
@@ -22,8 +24,8 @@ const START_X = Math.floor(window.innerWidth/(resolution*2));//Math.floor((NUMBE
 const START_Y = Math.floor(window.innerHeight/(resolution*2));//0;//Math.floor((NUMBER_OF_ROWS - 1) / 2);
 const BACKGROUND_ALPHA = 50;
 const START_POSITION = new GridPosition(START_X, START_Y);
-const START_NUMBER_OF_PARTICLES = 10000;
-const STEPS_TO_SIMULATE = 50;
+const START_NUMBER_OF_PARTICLES = population[10];
+const STEPS_TO_SIMULATE = 5;
 let simulator: Simulator;
 let stepsSimulated = 1;
 
