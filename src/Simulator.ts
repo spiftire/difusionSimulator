@@ -21,7 +21,7 @@ export class Simulator {
     this.START_PARTICLE_AMOUNT = startParticleAmount;
 
     this.grid = grid;
-    console.table(this.grid);
+    // console.table(this.grid);
 
     this.RIGHT_EDGE = this.grid.numberOfColums - 1;
     // console.log(this.RIGHT_EDGE);
@@ -108,6 +108,7 @@ export class Simulator {
           
           
           cell.position = newposition;
+          
           // console.log(`new position after set = ${cell.position.x}, ${cell.position.y}`);
           // console.table(oldGrid.grid);
           // console.table(newGrid.grid);

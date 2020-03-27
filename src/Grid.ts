@@ -1,7 +1,6 @@
 import { CellOfParticles } from "./CellOfParticles";
 
 export class Grid {
-
   // todo make an iterator for this class
   numberOfRows: number; // y
   numberOfColums: number; // x
@@ -14,6 +13,18 @@ export class Grid {
   }
 
   private create2dgrid(cols: number, rows: number): CellOfParticles[][] {
+    let arr = new Array(rows);
+    for (let col = 0; col < arr.length; col++) {
+      arr[col] = new Array(cols);
+      const temprows = arr[col];
+      for (let i = 0; i < temprows.length; i++) {
+        temprows[i] = null;
+      }
+    }
+    return arr;
+  }
+
+  private createEmpty2dgrid(cols: number, rows: number): number[][] {
     let arr = new Array(rows);
     for (let col = 0; col < arr.length; col++) {
       arr[col] = new Array(cols);
@@ -41,5 +52,23 @@ export class Grid {
     // console.log("x, y :" + x + ", " + y);
 
     return this.grid[y][x];
+  }
+
+  getGridOfParticles() {
+    this.calculateParticles();
+  }
+  calculateParticles() {
+    let result = this.createEmpty2dgrid(this.numberOfColums, this.numberOfRows);
+    for (let x = 0; x < this.numberOfColums; x++) {
+      for (let y = 0; y < this.numberOfRows; y++) {
+        const cell = this.getPositionContent(x,y);
+        if (cell) {
+          result[y][x] = cell.numberOfParticles;
+        }
+      }
+    }
+    // console.table(result);
+    
+    return result;
   }
 }
