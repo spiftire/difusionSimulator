@@ -70,6 +70,9 @@ function simulateOneStep() {
   console.log(`%c Step number: ${stepsSimulated}`, "background: #222; color: #bada55");
 
   grid = simulator.step();
+  let bg = color(255);
+  // bg.setAlpha(100);
+  background(bg);
   drawCell();
   let filename: string = `Population-${START_NUMBER_OF_PARTICLES}-stepno-${stepsSimulated}`;
   saveCanvas(filename, "png");
