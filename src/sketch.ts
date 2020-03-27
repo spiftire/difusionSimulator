@@ -105,14 +105,13 @@ function drawCell() {
         let from = color(0, saturation, brightness);
         // console.log("from");
         // console.log(from);
-        
-        
-        let to = color(HUE_MAX-HUE_MAX*.1, saturation, brightness);
+
+        let to = color(HUE_MAX - HUE_MAX * 0.1, saturation, brightness);
         // console.log("to");
         // console.log(to);
-        let fractionOfParticles = (particles/START_NUMBER_OF_PARTICLES);
+        let fractionOfParticles = particles / START_NUMBER_OF_PARTICLES;
         // console.log("fractionOfParticles: "+fractionOfParticles);
-        
+
         let fillColor = lerpColor(from, to, fractionOfParticles);
         // console.log("fillColor");
         // console.log(fillColor);
@@ -120,7 +119,8 @@ function drawCell() {
         fillColor.setAlpha(alpha);
         fill(fillColor);
         noStroke();
-        circle(xCord, yCord, particlesLog10*resolution * 2 + resolution);
+        rectMode(CENTER);
+        circle(xCord, yCord, /*particlesLog10*resolution * 2 + */ resolution);
       }
     }
   }
