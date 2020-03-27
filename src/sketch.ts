@@ -19,6 +19,7 @@ let resolution = 50;
 let cols: number;
 let rows: number;
 let grid: Grid;
+const SAVE_CANVAS:boolean = true;
 const NUMBER_OF_COLUMS = 10;
 const NUMBER_OF_ROWS = 10;
 const START_X = Math.floor(window.innerWidth / (resolution * 2)); //Math.floor((NUMBER_OF_COLUMS - 1) / 2);
@@ -56,12 +57,15 @@ function setup() {
 function draw() {
   simulateOneStep();
   if (frameCount >= STEPS_TO_SIMULATE && populationCounter < population.length) {
-    // reset()
+    reset()
+    // noLoop();
+  } 
+  if( populationCounter >= population.length){
     noLoop();
     console.log("noloop");
   }
 }
-console.log("done loop");
+console.log("done drawing");
 
 function simulateOneStep() {
   console.log(`%c Step number: ${stepsSimulated}`, "background: #222; color: #bada55");
@@ -72,8 +76,6 @@ function simulateOneStep() {
   // bg.setAlpha(100);
   background(bg);
   drawCell();
-  let filename: string = `Population-${START_NUMBER_OF_PARTICLES}-stepno-${stepsSimulated}`;
-  // saveCanvas(filename, "png");
 }
 
 function drawCell() {
@@ -137,13 +139,19 @@ function drawCell() {
     }
   }
   pop();
+
+  if(SAVE_CANVAS) {
+    let filename: string = `Population-${START_NUMBER_OF_PARTICLES}-stepno-${stepsSimulated}`;
+  saveCanvas(filename, "png");
+  }
 }
 
 function reset() {
-  frameCount = -1;
+  frameCount = 0;
   populationCounter++;
   START_NUMBER_OF_PARTICLES = population[populationCounter];
-  console.log(START_NUMBER_OF_PARTICLES);
+  console.log(`Start number of particles = ${START_NUMBER_OF_PARTICLES}`);
+  setup();
   
   // stepsSimulated = 0;
 }
