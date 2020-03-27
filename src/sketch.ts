@@ -57,9 +57,15 @@ function draw() {
   backgroundColor.setAlpha(BACKGROUND_ALPHA);
   background(backgroundColor);
   simulateOneStep();
+  if (frameCount >= STEPS_TO_SIMULATE) {
+    noLoop();
+    console.log("noloop");
 }
+}
+console.log("done loop");
 
 function simulateOneStep() {
+  console.log(`%c Step number: ${stepsSimulated}`, "background: #222; color: #bada55");
   stepsSimulated++;
   console.log(`%c Step number: ${stepsSimulated}`, "background: #222; color: #bada55");
 
