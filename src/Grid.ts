@@ -55,8 +55,9 @@ export class Grid {
   }
 
   getGridOfParticles() {
-    this.calculateParticles();
+    return this.calculateParticles();
   }
+
   calculateParticles() {
     let result = this.createEmpty2dgrid(this.numberOfColums, this.numberOfRows);
     for (let x = 0; x < this.numberOfColums; x++) {
